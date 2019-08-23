@@ -1,0 +1,20 @@
+<idea-plugin>
+    <id>ua.tarch64.codesync</id>
+    <name>CodeSync</name>
+    <vendor email="tarasturchenko1551@gmail.com" url="http://www.yourcompany.com">Self Development</vendor>
+
+    <description><![CDATA[
+    <h1>CodeSync</h1>
+    <h2>Cooperative coding helper</h2>
+    ]]></description>
+
+    <depends>com.intellij.modules.lang</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+    </extensions>
+
+    <actions>
+        <!-- Add your actions here -->
+    </actions>
+</idea-plugin>
