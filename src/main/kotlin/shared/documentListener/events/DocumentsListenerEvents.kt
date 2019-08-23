@@ -1,5 +1,5 @@
 package shared.documentListener.events
 
 enum class DocumentsListenerEvents {
-    ACTIVE_DOCUMENT_CHANGE
+    ACTIVE_DOCUMENT_CHANGED
 }
