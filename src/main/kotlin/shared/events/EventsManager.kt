@@ -1,10 +1,10 @@
 package shared.events
 
-class EventsManager {
+open class EventsManager {
     private val subscriptions: MutableList<Subscription> = mutableListOf()
 
-    fun on(eventName: String, handler: (payload: Any?) -> Unit): Subscription {
-        val subscription = Subscription(eventName, handler, this::off)
+    fun <Payload> on(eventName: String, handler: (payload: Payload) -> Unit): Subscription {
+        val subscription = Subscription(eventName, handler as (Any?) -> Unit, this::off)
         this.subscriptions.add(subscription)
         return subscription
     }

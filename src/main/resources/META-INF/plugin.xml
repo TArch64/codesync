@@ -6,6 +6,7 @@
     <description><![CDATA[
     <h1>CodeSync</h1>
     <h2>Cooperative coding helper</h2>
+    <h2>Cooperative coding helper</h2>
     ]]></description>
 
     <depends>com.intellij.modules.lang</depends>
@@ -17,4 +18,9 @@
     <actions>
         <!-- Add your actions here -->
     </actions>
+    <application-components>
+        <component>
+            <implementation-class>plugin.PluginComponent</implementation-class>
+        </component>
+    </application-components>
 </idea-plugin>
