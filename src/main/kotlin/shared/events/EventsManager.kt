@@ -1,19 +1,19 @@
 package shared.events
 
 open class EventsManager {
-    private val subscriptions: MutableList<Subscription> = mutableListOf()
+    private val subscriptions: MutableList<Subscription<Event>> = mutableListOf()
 
-    fun <Payload> on(eventName: String, handler: (payload: Payload) -> Unit): Subscription {
-        val subscription = Subscription(eventName, handler as (Any?) -> Unit, this::off)
+    fun <T: Event> on(eventName: String, handler: (event: T) -> Unit): Subscription<Event> {
+        val subscription = Subscription(eventName, handler as (event: Event) -> Unit, this::off)
         this.subscriptions.add(subscription)
         return subscription
     }
 
-    fun trigger(eventName: String, payload: Any?) {
-        subscriptions.filter { it.of(eventName) }.forEach { it.handle(payload) }
+    fun trigger(event: Event) {
+        subscriptions.filter { it.of(event.name) }.forEach { it.handle(event) }
     }
 
-    private fun off(subscription: Subscription) {
+    private fun off(subscription: Subscription<Event>) {
         subscriptions.remove(subscription)
     }
 }

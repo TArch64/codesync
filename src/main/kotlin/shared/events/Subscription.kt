@@ -1,9 +1,9 @@
 package shared.events
 
-class Subscription constructor(
+class Subscription<T: Event> constructor(
     private val eventName: String,
-    private val handler: (payload: Any?) -> Unit,
-    private val unsubscribe: (subscription: Subscription) -> Unit
+    private val handler: (event: T) -> Unit,
+    private val unsubscribe: (subscription: Subscription<T>) -> Unit
 ) {
     fun of(eventName: String): Boolean {
         return this.eventName == eventName
@@ -13,7 +13,7 @@ class Subscription constructor(
         this.unsubscribe(this)
     }
 
-    fun handle(payload: Any?) {
-        this.handler(payload)
+    fun handle(event: T) {
+        this.handler(event)
     }
 }

@@ -5,7 +5,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
-fun mockedUnsubscribe(subscription: Subscription) {}
+fun mockedUnsubscribe(subscription: Subscription<Event>) {}
 
 internal class SubscriptionTest_of {
     @Test fun isLookingSubscription() {
@@ -21,7 +21,7 @@ internal class SubscriptionTest_of {
 
 internal class SubscriptionTest_off {
     @Test fun unsubscriptionWorks() {
-        val subscription = Subscription("test", {}) {
+        val subscription = Subscription<Event>("test", {}) {
             assertTrue(it.of("test"), "Received the same subscription object")
         }
         subscription.off()
@@ -29,12 +29,12 @@ internal class SubscriptionTest_off {
 }
 
 internal class SubscriptionTest_handle {
-    private fun handleEvent(payload: Any?) {
-        assertEquals("Subscription works!", payload)
+    private fun handleEvent(event: Event) {
+        assertEquals("test", event.name)
     }
 
     @Test fun eventHandlingWorks() {
         val subscription = Subscription("test", this::handleEvent, ::mockedUnsubscribe)
-        subscription.handle("Subscription works!")
+        subscription.handle(Event("test"))
     }
 }
