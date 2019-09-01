@@ -4,9 +4,9 @@ import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.fileEditor.FileEditorManagerListener
 import shared.documentListener.events.ActiveDocumentChanged
 import shared.documentListener.events.DocumentsListenerEvents
-import shared.events.EventsManager
+import shared.events.Events
 
-class DocumentsListener: EventsManager() {
+class DocumentsListener: Events() {
     private val messagesBus = ApplicationManager.getApplication().messageBus
     private val connection = this.messagesBus.connect()
     private val fileEditorHandler = FileEditorHandler(this)

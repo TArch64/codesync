@@ -1,5 +1,5 @@
-package shared.changeListener.events
+package shared.changeEmitter.events
 
-import shared.events.Event
+import shared.events.models.Event
 
 data class DocumentChanged(val changes: String): Event(ChangeListenerEvents.DOCUMENT_CHANGED.name)

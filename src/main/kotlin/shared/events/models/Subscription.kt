@@ -1,4 +1,4 @@
-package shared.events
+package shared.events.models
 
 class Subscription<T: Event> constructor(
     private val eventName: String,

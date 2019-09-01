@@ -1,13 +1,17 @@
-package shared.changeListener
+package shared.changeEmitter
 
 import com.intellij.openapi.editor.Document
-import shared.changeListener.events.ChangeListenerEvents
-import shared.changeListener.events.DocumentChanged
-import shared.events.EventsManager
+import shared.changeEmitter.events.ChangeListenerEvents
+import shared.changeEmitter.events.DocumentChanged
+import shared.events.Events
 
-class ChangeListener: EventsManager() {
+class ChangesEmitter: Events() {
     private var activeDocument: Document? = null
     private val changeDocumentHandler = ChangeDocumentHandler(this)
+
+    init {
+
+    }
 
     fun changeActiveDocument(document: Document?) {
         this.removeDocumentListener()

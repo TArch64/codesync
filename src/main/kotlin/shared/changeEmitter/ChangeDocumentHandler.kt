@@ -1,12 +1,12 @@
-package shared.changeListener
+package shared.changeEmitter
 
 import com.intellij.openapi.editor.event.DocumentEvent
 import com.intellij.openapi.editor.event.DocumentListener
-import shared.changeListener.events.DocumentChanged
+import shared.changeEmitter.events.DocumentChanged
 
-class ChangeDocumentHandler(val listener: ChangeListener): DocumentListener {
+class ChangeDocumentHandler(private val emitter: ChangesEmitter): DocumentListener {
     override fun beforeDocumentChange(event: DocumentEvent) {
         val documentChanged = DocumentChanged(event.newFragment.toString())
-        this.listener.trigger(documentChanged)
+        this.emitter.trigger(documentChanged)
     }
 }

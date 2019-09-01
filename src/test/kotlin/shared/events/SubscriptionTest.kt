@@ -1,6 +1,8 @@
 package shared.events
 
 import org.junit.jupiter.api.Test
+import shared.events.models.Event
+import shared.events.models.Subscription
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
