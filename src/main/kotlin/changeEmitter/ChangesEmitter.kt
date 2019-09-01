@@ -1,8 +1,8 @@
-package shared.changeEmitter
+package changeEmitter
 
 import com.intellij.openapi.editor.Document
-import shared.changeEmitter.events.ChangeListenerEvents
-import shared.changeEmitter.events.DocumentChanged
+import changeEmitter.events.ChangeListenerEvents
+import changeEmitter.events.DocumentChanged
 import shared.events.Events
 
 class ChangesEmitter: Events() {

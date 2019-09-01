@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.intellij.tasks.PatchPluginXmlTask
 
 plugins {
     id("org.jetbrains.intellij") version "0.4.10"
@@ -8,34 +9,19 @@ plugins {
 group = "ua.tarch64"
 version = "1.0.0"
 
-repositories {
-    mavenCentral()
-}
+repositories { mavenCentral() }
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.4.2")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.4.2")
+    compile("io.socket:socket.io-client:1.0.0")
 }
 
-intellij {
-    version = "2019.2.1"
-}
+intellij { version = "2019.2.1" }
 
-tasks.getByName<org.jetbrains.intellij.tasks.PatchPluginXmlTask>("patchPluginXml") {
-    changeNotes("""
-      Add change notes here.<br>
-      <em>most HTML tags may be used</em>""")
-}
-
-tasks {
-    "test"(Test::class) {
-        useJUnitPlatform()
-    }
+tasks.getByName<PatchPluginXmlTask>("patchPluginXml") {
+    changeNotes("Add change notes here.<br><em>most HTML tags may be used</em>")
 }
 
 tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        kotlinOptions.jvmTarget = "1.8"
-    }
+    kotlinOptions { kotlinOptions.jvmTarget = "1.8" }
 }

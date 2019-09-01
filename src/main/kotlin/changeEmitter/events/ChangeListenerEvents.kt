@@ -1,4 +1,4 @@
-package shared.changeEmitter.events
+package changeEmitter.events
 
 enum class ChangeListenerEvents {
     DOCUMENT_CHANGED

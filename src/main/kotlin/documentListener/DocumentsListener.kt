@@ -1,9 +1,9 @@
-package shared.documentListener
+package documentListener
 
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.fileEditor.FileEditorManagerListener
-import shared.documentListener.events.ActiveDocumentChanged
-import shared.documentListener.events.DocumentsListenerEvents
+import documentListener.events.ActiveDocumentChanged
+import documentListener.events.DocumentsListenerEvents
 import shared.events.Events
 
 class DocumentsListener: Events() {

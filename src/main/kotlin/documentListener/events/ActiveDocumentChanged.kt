@@ -1,4 +1,4 @@
-package shared.documentListener.events
+package documentListener.events
 
 import com.intellij.openapi.editor.Document
 import shared.events.models.Event

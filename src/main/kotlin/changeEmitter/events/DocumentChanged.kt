@@ -1,4 +1,4 @@
-package shared.changeEmitter.events
+package changeEmitter.events
 
 import shared.events.models.Event
 

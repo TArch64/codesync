@@ -1,8 +1,8 @@
-package shared.changeEmitter
+package changeEmitter
 
 import com.intellij.openapi.editor.event.DocumentEvent
 import com.intellij.openapi.editor.event.DocumentListener
-import shared.changeEmitter.events.DocumentChanged
+import changeEmitter.events.DocumentChanged
 
 class ChangeDocumentHandler(private val emitter: ChangesEmitter): DocumentListener {
     override fun beforeDocumentChange(event: DocumentEvent) {
