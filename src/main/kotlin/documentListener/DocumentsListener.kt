@@ -11,7 +11,7 @@ class DocumentsListener: Events() {
     private val connection = this.messagesBus.connect()
     private val fileEditorHandler = FileEditorHandler(this)
 
-    init {
+    fun setup() {
         this.connection.subscribe(FileEditorManagerListener.FILE_EDITOR_MANAGER, this.fileEditorHandler)
     }
 

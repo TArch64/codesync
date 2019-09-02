@@ -10,7 +10,11 @@ class Notifications {
     }
 
     companion object {
-        private val instance = Notifications()
+        private lateinit var instance: Notifications
+
+        fun setup() {
+           this.instance = Notifications()
+        }
 
         fun notifyInfo(message: String) {
             instance.notify(message, Type.INFO)

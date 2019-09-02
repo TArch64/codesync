@@ -1,5 +1,5 @@
 package changeEmitter.events
 
-enum class ChangeListenerEvents {
+enum class ChangesEmitterEvents {
     DOCUMENT_CHANGED
 }

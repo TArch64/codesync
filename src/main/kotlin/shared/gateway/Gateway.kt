@@ -31,7 +31,7 @@ class Gateway(private val apiPath: String): IEvents {
     companion object {
         lateinit var instance: Gateway
 
-        fun initialize() {
+        fun setup() {
             this.instance = Gateway(Environment.API_PATH)
         }
     }

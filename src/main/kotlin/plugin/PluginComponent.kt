@@ -9,16 +9,18 @@ import shared.ui.Notifications
 
 class PluginComponent: ApplicationComponent {
     private val documentListener = DocumentsListener()
-    private val changeListener = ChangesEmitter()
+    private val changesEmitter = ChangesEmitter()
 
     override fun initComponent() {
         super.initComponent()
 
-        Gateway.initialize()
+        Notifications.setup()
+        Gateway.setup()
 
-        documentListener.onActiveDocumentChange { changeListener.changeActiveDocument(it.document) }
-        changeListener.onDocumentChanged { Notifications.notifyInfo(it.changes) }
+        this.documentListener.setup()
+        this.changesEmitter.setup()
 
-        Gateway.instance.on<GatewayEvent>("test") { Notifications.notifyInfo(it.toString()) }
+        this.documentListener.onActiveDocumentChange { this.changesEmitter.changeActiveDocument(it.document) }
+        this.changesEmitter.onDocumentChanged { Notifications.notifyInfo(it.changes) }
     }
 }

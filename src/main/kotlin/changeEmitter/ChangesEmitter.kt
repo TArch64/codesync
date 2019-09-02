@@ -1,16 +1,19 @@
 package changeEmitter
 
 import com.intellij.openapi.editor.Document
-import changeEmitter.events.ChangeListenerEvents
+import changeEmitter.events.ChangesEmitterEvents
 import changeEmitter.events.DocumentChangedEvent
 import shared.events.Events
+import shared.gateway.Gateway
+import shared.gateway.events.GatewayEvent
+import shared.ui.Notifications
 
 class ChangesEmitter: Events() {
     private var activeDocument: Document? = null
     private val changeDocumentHandler = ChangeDocumentHandler(this)
 
-    init {
-
+    fun setup() {
+        Gateway.instance.on<GatewayEvent>("test") { Notifications.notifyInfo(it.toString()) }
     }
 
     fun changeActiveDocument(document: Document?) {
@@ -28,6 +31,6 @@ class ChangesEmitter: Events() {
     }
 
     fun onDocumentChanged(handler: (event: DocumentChangedEvent) -> Unit) {
-        this.on(ChangeListenerEvents.DOCUMENT_CHANGED.name, handler)
+        this.on(ChangesEmitterEvents.DOCUMENT_CHANGED.name, handler)
     }
 }
