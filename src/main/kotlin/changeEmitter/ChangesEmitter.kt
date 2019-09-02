@@ -2,7 +2,7 @@ package changeEmitter
 
 import com.intellij.openapi.editor.Document
 import changeEmitter.events.ChangeListenerEvents
-import changeEmitter.events.DocumentChanged
+import changeEmitter.events.DocumentChangedEvent
 import shared.events.Events
 
 class ChangesEmitter: Events() {
@@ -27,7 +27,7 @@ class ChangesEmitter: Events() {
         this.activeDocument?.addDocumentListener(this.changeDocumentHandler)
     }
 
-    fun onDocumentChanged(handler: (event: DocumentChanged) -> Unit) {
+    fun onDocumentChanged(handler: (event: DocumentChangedEvent) -> Unit) {
         this.on(ChangeListenerEvents.DOCUMENT_CHANGED.name, handler)
     }
 }
