@@ -1,5 +1,6 @@
 package changeEmitter.events
 
 import shared.events.models.Event
+import shared.models.DocumentChanges
 
-data class DocumentChangedEvent(val changes: String): Event(ChangesEmitterEvents.DOCUMENT_CHANGED.name)
+data class DocumentChangedEvent(val changes: DocumentChanges): Event(ChangesEmitterEvents.DOCUMENT_CHANGED.name)
