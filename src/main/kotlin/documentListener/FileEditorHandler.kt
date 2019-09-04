@@ -5,7 +5,7 @@ import com.intellij.openapi.fileEditor.FileEditorManagerAdapter
 import com.intellij.openapi.fileEditor.FileEditorManagerEvent
 import com.intellij.openapi.vfs.VirtualFile
 import documentListener.events.ActiveDocumentChangedEvent
-import shared.helpers.FileHelper
+import shared.helpers.DocumentHelper
 
 class FileEditorHandler(private val listener: DocumentsListener): FileEditorManagerAdapter() {
     override fun selectionChanged(event: FileEditorManagerEvent) {
@@ -15,7 +15,7 @@ class FileEditorHandler(private val listener: DocumentsListener): FileEditorMana
 
     private fun fileToDocument(file: VirtualFile?): Document? {
         return when {
-            file != null -> FileHelper.document(file)
+            file != null -> DocumentHelper.document(file)
             else -> null
         }
     }
