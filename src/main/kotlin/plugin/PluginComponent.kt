@@ -5,7 +5,7 @@ import changeEmitter.ChangesEmitter
 import documentListener.DocumentsListener
 import documentUpdater.DocumentUpdater
 import shared.gateway.Gateway
-import shared.ui.Notifications
+import shared.ui.Toasts
 
 class PluginComponent: ApplicationComponent {
     private val documentListener = DocumentsListener()
@@ -18,12 +18,12 @@ class PluginComponent: ApplicationComponent {
             this.setup()
             this.listenEvents()
         } catch (exception: Exception) {
-            Notifications.notifyError(exception.message ?: "Something went wrong")
+            Toasts.notifyError(exception.message ?: "Something went wrong")
         }
     }
 
     private fun setup() {
-        Notifications.setup()
+        Toasts.setup()
         Gateway.setup()
 
         this.documentListener.setup()
@@ -33,7 +33,7 @@ class PluginComponent: ApplicationComponent {
     private fun listenEvents() {
         this.documentListener.onActiveDocumentChange { this.changesEmitter.changeActiveDocument(it.document) }
         this.changesEmitter.onActiveDocumentChanged {
-            Notifications.notifyInfo("${it.changes.documentRelativePath}: ${it.changes.changed}")
+            Toasts.notifyInfo("${it.changes.documentRelativePath}: ${it.changes.changed}")
         }
         this.changesEmitter.onDocumentChanged { this.documentUpdater.updateDocument(it.changes) }
     }

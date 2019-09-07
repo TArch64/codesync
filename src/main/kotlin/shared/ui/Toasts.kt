@@ -3,17 +3,17 @@ package shared.ui
 import com.intellij.notification.Notification
 import com.intellij.notification.NotificationType
 
-class Notifications {
+class Toasts {
     fun notify(message: String, type: Type) {
         val notification = Notification("ua.tarch64.codesync", "CodeSync", message, type.nativeType)
         com.intellij.notification.Notifications.Bus.notify(notification)
     }
 
     companion object {
-        private lateinit var instance: Notifications
+        private lateinit var instance: Toasts
 
         fun setup() {
-           this.instance = Notifications()
+           this.instance = Toasts()
         }
 
         fun notifyInfo(message: String) {
