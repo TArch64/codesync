@@ -5,10 +5,9 @@ import com.intellij.openapi.fileEditor.FileDocumentManager
 import com.intellij.openapi.vfs.VfsUtilCore
 import com.intellij.openapi.vfs.VirtualFile
 
-
 object DocumentHelper {
     fun document(file: VirtualFile): Document {
-        return FileDocumentManager.getInstance().getDocument(file)!!
+        return ApplicationHelper.runReadAction { FileDocumentManager.getInstance().getDocument(file) }!!
     }
 
     fun documentByRelativePath(path: String): Document {

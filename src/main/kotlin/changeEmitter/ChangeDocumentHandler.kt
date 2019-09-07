@@ -10,7 +10,8 @@ class ChangeDocumentHandler(private val emitter: ChangesEmitter): DocumentListen
     override fun beforeDocumentChange(event: DocumentEvent) {
         val documentChanges = DocumentChanges(
             event.newFragment.toString(),
-            DocumentHelper.relativePath(event.document)
+            DocumentHelper.relativePath(event.document),
+            1, 2
         )
         val documentChanged = ActiveDocumentChangedEvent(documentChanges)
         this.emitter.trigger(documentChanged)
