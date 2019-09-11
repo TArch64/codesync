@@ -18,15 +18,16 @@ class Gateway(private val apiPath: String): IEvents {
     }
 
     override fun <T : Event> on(eventName: String, handler: (event: T) -> Unit): Subscription<out Event> {
-        val subscription = Subscription(eventName, handler as (event: GatewayEvent) -> Unit, this::off)
+        val subscription = Subscription(eventName, handler as (event: GatewayEvent) -> Unit)
         this.socket.on(eventName) { subscription.handle(GatewayEvent(eventName, it.first() as JSONObject)) }
         this.subscriptions.add(subscription)
         return subscription
     }
 
-    private fun off(subscription: Subscription<GatewayEvent>) {}
-
-    override fun trigger(event: Event) {}
+    override fun trigger(event: Event) {
+        val gatewayEvent = event as GatewayEvent
+        this.socket.emit(gatewayEvent.name, gatewayEvent.payload)
+    }
 
     companion object {
         lateinit var instance: Gateway

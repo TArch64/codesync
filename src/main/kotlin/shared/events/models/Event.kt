@@ -1,3 +1,3 @@
 package shared.events.models
 
-open class Event(val name: String)
+open class Event(open val name: String)

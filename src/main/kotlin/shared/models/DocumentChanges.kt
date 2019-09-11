@@ -14,6 +14,15 @@ data class DocumentChanges(
         return DocumentHelper.documentByRelativePath(this.documentRelativePath)
     }
 
+    fun toJSON(): JSONObject {
+        val json = JSONObject()
+        json.put("changed", this.changed)
+        json.put("documentRelativePath", this.documentRelativePath)
+        json.put("startChangesAtPosition", this.startChangesAtPosition)
+        json.put("endChangesAtPosition", this.endChangesAtPosition)
+        return json
+    }
+
     companion object {
         fun fromJSON(json: JSONObject): DocumentChanges {
             return DocumentChanges(

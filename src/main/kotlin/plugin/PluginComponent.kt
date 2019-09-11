@@ -32,9 +32,6 @@ class PluginComponent: ApplicationComponent {
 
     private fun listenEvents() {
         this.documentListener.onActiveDocumentChange { this.changesEmitter.changeActiveDocument(it.document) }
-        this.changesEmitter.onActiveDocumentChanged {
-            Toasts.notifyInfo("${it.changes.documentRelativePath}: ${it.changes.changed}")
-        }
         this.changesEmitter.onDocumentChanged { this.documentUpdater.updateDocument(it.changes) }
     }
 }

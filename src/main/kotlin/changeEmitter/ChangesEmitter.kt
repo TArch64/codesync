@@ -16,6 +16,11 @@ class ChangesEmitter: Events() {
 
     fun setup() {
         Gateway.instance.on(GatewayEvents.DOCUMENT_CHANGED.name, this::onReceivedExternalChanges)
+
+        this.on(ChangesEmitterEvents.ACTIVE_DOCUMENT_CHANGED.name) { event: ActiveDocumentChangedEvent ->
+            val gatewayEvent = GatewayEvent(GatewayEvents.SEND_DOCUMENT_CHANGES.name, event.changes.toJSON())
+            Gateway.instance.trigger(gatewayEvent)
+        }
     }
 
     private fun onReceivedExternalChanges(event: GatewayEvent) {
@@ -37,10 +42,6 @@ class ChangesEmitter: Events() {
 
     private fun addDocumentListener() {
         this.activeDocument?.addDocumentListener(this.changeDocumentHandler)
-    }
-
-    fun onActiveDocumentChanged(handler: (event: ActiveDocumentChangedEvent) -> Unit) {
-        this.on(ChangesEmitterEvents.ACTIVE_DOCUMENT_CHANGED.name, handler)
     }
 
     fun onDocumentChanged(handler: (event: DocumentChangedEvent) -> Unit) {

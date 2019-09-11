@@ -3,4 +3,4 @@ package shared.gateway.events
 import org.json.JSONObject
 import shared.events.models.Event
 
-data class GatewayEvent(val eventName: String, val payload: JSONObject?): Event(eventName)
+data class GatewayEvent(override val name: String, val payload: JSONObject?): Event(name)

@@ -2,7 +2,6 @@ package documentUpdater
 
 import shared.helpers.ApplicationHelper
 import shared.models.DocumentChanges
-import shared.ui.Toasts
 
 class DocumentUpdater {
     fun updateDocument(changes: DocumentChanges) {

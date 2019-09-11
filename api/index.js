@@ -5,5 +5,5 @@ io.on('connection', socket => {
         socket.on(from, value => socket.broadcast.emit(to, value));
     }
 
-    broadcastEvents('EMIT_CHANGES', 'DOCUMENT_CHANGED');
+    broadcastEvents('SEND_DOCUMENT_CHANGES', 'DOCUMENT_CHANGED');
 });

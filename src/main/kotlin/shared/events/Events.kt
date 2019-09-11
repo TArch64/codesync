@@ -8,13 +8,9 @@ open class Events: IEvents {
     private val subscriptions: MutableList<Subscription<Event>> = mutableListOf()
 
     override fun <T: Event> on(eventName: String, handler: (event: T) -> Unit): Subscription<Event> {
-        val subscription = Subscription(eventName, handler as (event: Event) -> Unit, this::off)
+        val subscription = Subscription(eventName, handler as (event: Event) -> Unit)
         this.subscriptions.add(subscription)
         return subscription
-    }
-
-    private fun off(subscription: Subscription<Event>) {
-        this.subscriptions.remove(subscription)
     }
 
     override fun trigger(event: Event) {
