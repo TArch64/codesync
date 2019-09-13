@@ -23,6 +23,12 @@ data class DocumentChanges(
         return json
     }
 
+    fun isEqual(changes: DocumentChanges): Boolean {
+        return changes.changed == this.changed
+                && changes.startChangesAtPosition == this.startChangesAtPosition
+                && changes.endChangesAtPosition == this.endChangesAtPosition
+    }
+
     companion object {
         fun fromJSON(json: JSONObject): DocumentChanges {
             return DocumentChanges(

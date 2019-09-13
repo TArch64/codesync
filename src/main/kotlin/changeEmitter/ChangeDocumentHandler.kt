@@ -5,17 +5,25 @@ import com.intellij.openapi.editor.event.DocumentListener
 import changeEmitter.events.ActiveDocumentChangedEvent
 import shared.helpers.DocumentHelper
 import shared.models.DocumentChanges
-import shared.ui.Toasts
+import shared.State
 
 class ChangeDocumentHandler(private val emitter: ChangesEmitter): DocumentListener {
     override fun beforeDocumentChange(event: DocumentEvent) {
-        val documentChanges = DocumentChanges(
+        val changes = DocumentChanges(
             event.newFragment.toString(),
             DocumentHelper.relativePath(event.document),
             event.offset,
             event.offset + event.oldLength
         )
-        val documentChanged = ActiveDocumentChangedEvent(documentChanges)
+
+        if ( State.lastDocumentChanges?.isEqual(changes) == true ) { return }
+
+        State.lastDocumentChanges = changes
+        this.handleUserChanges(changes)
+    }
+
+    private fun handleUserChanges(changes: DocumentChanges) {
+        val documentChanged = ActiveDocumentChangedEvent(changes)
         this.emitter.trigger(documentChanged)
     }
 }

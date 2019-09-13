@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>ua.tarch64.codesync</id>
     <name>CodeSync</name>
-    <vendor email="tarasturchenko1551@gmail.com" url="http://www.yourcompany.com">Self Development</vendor>
+    <vendor email="tarasturchenko1551@gmail.com" url="https://github.com/TarasTurchenko">Self Development</vendor>
 
     <description><![CDATA[
     <h1>CodeSync</h1>
@@ -10,6 +10,7 @@
     ]]></description>
 
     <depends>com.intellij.modules.lang</depends>
+    <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
