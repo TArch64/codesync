@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>ua.tarch64.codesync</id>
     <name>CodeSync</name>
-    <vendor email="tarasturchenko1551@gmail.com" url="https://github.com/TarasTurchenko">Self Development</vendor>
+    <vendor email="tarasturchenko1551@gmail.com" url="https://github.com/TarasTurchenko">TArch64</vendor>
 
     <description><![CDATA[
     <h1>CodeSync</h1>
@@ -15,15 +15,13 @@
     <extensions defaultExtensionNs="com.intellij" />
 
     <actions>
-
-
         <group id="ua.TArch64.codesync" text="CodeSync" popup="true">
             <add-to-group group-id="ToolsMenu" anchor="last"/>
 
             <group id="TArch.CooCode.Room">
                 <add-to-group group-id="ua.TArch64.codesync" anchor="first"/>
 
-                <action id="plugin.actions.CreateRoomAction" class="plugin.actions.CreateRoomAction" text="Create Room"/>
+                <action id="ua.tarch64.plugin.actions.CreateRoomAction" class="ua.tarch64.plugin.actions.CreateRoomAction" text="Create Room"/>
             </group>
         </group>
     </actions>
