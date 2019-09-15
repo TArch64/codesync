@@ -1,7 +1,7 @@
-package shared
+package plugin
 
 import shared.models.DocumentChanges
 
-object State {
+class PluginState {
     var lastDocumentChanges: DocumentChanges? = null
 }

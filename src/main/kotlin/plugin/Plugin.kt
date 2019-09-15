@@ -1,28 +1,19 @@
 package plugin
 
-import com.intellij.openapi.components.ApplicationComponent
 import changeEmitter.ChangesEmitter
 import documentListener.DocumentsListener
 import documentUpdater.DocumentUpdater
 import shared.gateway.Gateway
 import shared.ui.Toasts
 
-class PluginComponent: ApplicationComponent {
+class Plugin {
+    public val state = PluginState()
+
     private val documentListener = DocumentsListener()
     private val changesEmitter = ChangesEmitter()
     private val documentUpdater = DocumentUpdater()
 
-    override fun initComponent() {
-        super.initComponent()
-        try {
-            this.setup()
-            this.listenEvents()
-        } catch (exception: Exception) {
-            Toasts.notifyError(exception.message ?: "Something went wrong")
-        }
-    }
-
-    private fun setup() {
+    init {
         Toasts.setup()
         Gateway.setup()
 
@@ -30,8 +21,14 @@ class PluginComponent: ApplicationComponent {
         this.changesEmitter.setup()
     }
 
+    fun up() {
+        this.listenEvents()
+    }
+
     private fun listenEvents() {
         this.documentListener.onActiveDocumentChange { this.changesEmitter.changeActiveDocument(it.document) }
         this.changesEmitter.onDocumentChanged { this.documentUpdater.updateDocument(it.changes) }
     }
+
+    companion object { val instance = Plugin() }
 }

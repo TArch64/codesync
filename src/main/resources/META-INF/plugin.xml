@@ -12,16 +12,19 @@
     <depends>com.intellij.modules.lang</depends>
     <depends>com.intellij.modules.platform</depends>
 
-    <extensions defaultExtensionNs="com.intellij">
-        <!-- Add your extensions here -->
-    </extensions>
+    <extensions defaultExtensionNs="com.intellij" />
 
     <actions>
-        <!-- Add your actions here -->
+
+
+        <group id="ua.TArch64.codesync" text="CodeSync" popup="true">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+
+            <group id="TArch.CooCode.Room">
+                <add-to-group group-id="ua.TArch64.codesync" anchor="first"/>
+
+                <action id="plugin.actions.CreateRoomAction" class="plugin.actions.CreateRoomAction" text="Create Room"/>
+            </group>
+        </group>
     </actions>
-    <application-components>
-        <component>
-            <implementation-class>plugin.PluginComponent</implementation-class>
-        </component>
-    </application-components>
 </idea-plugin>
