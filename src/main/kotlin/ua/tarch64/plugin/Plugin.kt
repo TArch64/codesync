@@ -7,7 +7,8 @@ import ua.tarch64.shared.gateway.Gateway
 import ua.tarch64.shared.ui.Toasts
 
 class Plugin {
-    public val state = PluginState()
+    val env = PluginEnv()
+    val state = PluginState()
 
     private val documentListener = DocumentsListener()
     private val changesEmitter = ChangesEmitter()

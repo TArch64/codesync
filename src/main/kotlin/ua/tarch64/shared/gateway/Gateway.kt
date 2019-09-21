@@ -3,7 +3,7 @@ package ua.tarch64.shared.gateway
 import io.socket.client.IO
 import io.socket.client.Socket
 import org.json.JSONObject
-import ua.tarch64.shared.Environment
+import ua.tarch64.plugin.Plugin
 import ua.tarch64.shared.events.models.Event
 import ua.tarch64.shared.events.models.IEvents
 import ua.tarch64.shared.events.models.Subscription
@@ -11,9 +11,9 @@ import ua.tarch64.shared.gateway.events.GatewayEvent
 
 class Gateway(private val apiPath: String): IEvents {
     private val subscriptions: MutableList<Subscription<GatewayEvent>> = mutableListOf()
-    private val socket: Socket = initializeSocket().connect()
+    private val socket: Socket = setupSocket().connect()
 
-    private fun initializeSocket(): Socket {
+    private fun setupSocket(): Socket {
         return IO.socket(this.apiPath)
     }
 
@@ -33,7 +33,7 @@ class Gateway(private val apiPath: String): IEvents {
         lateinit var instance: Gateway
 
         fun setup() {
-            this.instance = Gateway(Environment.API_PATH)
+            this.instance = Gateway(Plugin.instance.env.API_PATH)
         }
     }
 }
