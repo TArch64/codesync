@@ -9,12 +9,14 @@ import ua.tarch64.shared.events.models.IEvents
 import ua.tarch64.shared.events.models.Subscription
 import ua.tarch64.shared.gateway.events.GatewayEvent
 
-class Gateway(private val apiPath: String): IEvents {
+class Gateway: IEvents {
     private val subscriptions: MutableList<Subscription<GatewayEvent>> = mutableListOf()
-    private val socket: Socket = setupSocket().connect()
+    private val socket: Socket
+    private val service = GatewayService()
 
-    private fun setupSocket(): Socket {
-        return IO.socket(this.apiPath)
+    init {
+        this.service.up()
+        this.socket = IO.socket(Plugin.instance.env.API_PATH).connect()
     }
 
     override fun <T : Event> on(eventName: String, handler: (event: T) -> Unit): Subscription<out Event> {
@@ -33,7 +35,7 @@ class Gateway(private val apiPath: String): IEvents {
         lateinit var instance: Gateway
 
         fun setup() {
-            this.instance = Gateway(Plugin.instance.env.API_PATH)
+            this.instance = Gateway()
         }
     }
 }
