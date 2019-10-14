@@ -18,10 +18,10 @@
         <group id="ua.TArch64.codesync" text="CodeSync" popup="true">
             <add-to-group group-id="ToolsMenu" anchor="last"/>
 
-            <group id="TArch.CooCode.Room">
+            <group id="ua.TArch64.codesync.Room">
                 <add-to-group group-id="ua.TArch64.codesync" anchor="first"/>
 
-                <action id="ua.tarch64.plugin.actions.CreateRoomAction" class="ua.tarch64.plugin.actions.CreateRoomAction" text="Create Room"/>
+                <action id="ua.TArch64.codesync.room.ConnectAction" class="ua.tarch64.room.actions.ConnectAction" text="Create Room"/>
             </group>
         </group>
     </actions>
