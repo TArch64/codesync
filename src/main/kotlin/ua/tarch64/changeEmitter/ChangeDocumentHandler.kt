@@ -7,7 +7,7 @@ import ua.tarch64.plugin.Plugin
 import ua.tarch64.shared.helpers.DocumentHelper
 import ua.tarch64.shared.models.DocumentChanges
 
-class ChangeDocumentHandler(private val emitter: ChangesEmitter): DocumentListener {
+class ChangeDocumentHandler(private val plugin: Plugin, private val emitter: ChangesEmitter): DocumentListener {
     override fun beforeDocumentChange(event: DocumentEvent) {
         val changes = DocumentChanges(
             event.newFragment.toString(),
@@ -16,9 +16,9 @@ class ChangeDocumentHandler(private val emitter: ChangesEmitter): DocumentListen
             event.offset + event.oldLength
         )
 
-        if ( Plugin.instance.state.lastDocumentChanges?.isEqual(changes) == true ) { return }
+        if ( this.plugin.state.lastDocumentChanges?.isEqual(changes) == true ) { return }
 
-        Plugin.instance.state.lastDocumentChanges = changes
+        this.plugin.state.lastDocumentChanges = changes
         this.handleUserChanges(changes)
     }
 

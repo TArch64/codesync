@@ -3,30 +3,22 @@ package ua.tarch64.shared.ui
 import com.intellij.notification.Notification
 import com.intellij.notification.NotificationType
 
+enum class Type(val nativeType: NotificationType) {
+    INFO(NotificationType.INFORMATION),
+    ERROR(NotificationType.ERROR)
+}
+
 class Toasts {
-    fun notify(message: String, type: Type) {
+    private fun notify(message: String, type: Type) {
         val notification = Notification("ua.tarch64.codesync", "CodeSync", message, type.nativeType)
         com.intellij.notification.Notifications.Bus.notify(notification)
     }
 
-    companion object {
-        private lateinit var instance: Toasts
+    fun notifyInfo(message: String) {
+        this.notify(message, Type.INFO)
+    }
 
-        fun setup() {
-           this.instance = Toasts()
-        }
-
-        fun notifyInfo(message: String) {
-            instance.notify(message, Type.INFO)
-        }
-
-        fun notifyError(message: String) {
-            instance.notify(message, Type.ERROR)
-        }
-
-        enum class Type(val nativeType: NotificationType) {
-            INFO(NotificationType.INFORMATION),
-            ERROR(NotificationType.ERROR)
-        }
+    fun notifyError(message: String) {
+        this.notify(message, Type.ERROR)
     }
 }

@@ -4,9 +4,9 @@ import ua.tarch64.plugin.Plugin
 import ua.tarch64.shared.helpers.ApplicationHelper
 import ua.tarch64.shared.models.DocumentChanges
 
-class DocumentUpdater {
+class DocumentUpdater(private val plugin: Plugin) {
     fun updateDocument(changes: DocumentChanges) {
-        if ( Plugin.instance.state.lastDocumentChanges?.isEqual(changes) == true ) { return }
+        if ( this.plugin.state.lastDocumentChanges?.isEqual(changes) == true ) { return }
 
         val document = changes.fetchDocument()
 
