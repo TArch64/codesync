@@ -2,15 +2,17 @@ package ua.tarch64.shared.gateway
 
 import io.socket.client.IO
 import org.json.JSONObject
-import ua.tarch64.plugin.Plugin
+import ua.tarch64.plugin.PluginEnv
 import ua.tarch64.shared.events.models.Event
 import ua.tarch64.shared.events.models.IEvents
 import ua.tarch64.shared.events.models.Subscription
 import ua.tarch64.shared.gateway.events.GatewayEvent
+import ua.tarch64.shared.moduleInjection.InjectionModule
 
-class Gateway(private val plugin: Plugin): IEvents {
+class Gateway: InjectionModule(), IEvents {
+    private val pluginEnv: PluginEnv = this.injectModule(PluginEnv::class.java)
     private val subscriptions: MutableList<Subscription<GatewayEvent>> = mutableListOf()
-    private var socket = IO.socket(this.plugin.env.API_PATH)
+    private var socket = IO.socket(this.pluginEnv.API_PATH)
 
     fun up() {
         this.socket = this.socket.connect()

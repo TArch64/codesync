@@ -6,17 +6,16 @@ import com.intellij.openapi.fileEditor.FileEditorManagerListener
 import com.intellij.openapi.vfs.VirtualFile
 import ua.tarch64.documentListener.events.ActiveDocumentChangedEvent
 import ua.tarch64.shared.helpers.DocumentHelper
+import ua.tarch64.shared.moduleInjection.IInjectionModule
+import ua.tarch64.shared.moduleInjection.InjectionModule
 
-class FileEditorHandler(private val listener: DocumentsListener): FileEditorManagerListener {
+class FileEditorHandler(private val documentsListener: DocumentsListener): FileEditorManagerListener, IInjectionModule by InjectionModule() {
     override fun selectionChanged(event: FileEditorManagerEvent) {
         val activeDocumentChange = ActiveDocumentChangedEvent(this.fileToDocument(event.newFile))
-        this.listener.trigger(activeDocumentChange)
+        this.documentsListener.trigger(activeDocumentChange)
     }
 
     private fun fileToDocument(file: VirtualFile?): Document? {
-        return when {
-            file != null -> DocumentHelper.document(file)
-            else -> null
-        }
+        return if (file == null) null else DocumentHelper.document(file)
     }
 }

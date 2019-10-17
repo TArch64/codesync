@@ -4,17 +4,13 @@ import ua.tarch64.changeEmitter.ChangesEmitter
 import ua.tarch64.documentListener.DocumentsListener
 import ua.tarch64.documentUpdater.DocumentUpdater
 import ua.tarch64.shared.gateway.Gateway
-import ua.tarch64.shared.ui.Toasts
+import ua.tarch64.shared.moduleInjection.InjectionModule
 
-class Plugin {
-    val env = PluginEnv()
-    val state = PluginState()
-    val gateway = Gateway(this)
-    val toasts = Toasts()
-
-    private val documentListener = DocumentsListener()
-    private val changesEmitter = ChangesEmitter(this)
-    private val documentUpdater = DocumentUpdater(this)
+class Plugin: InjectionModule() {
+    private val gateway = this.injectModule(Gateway::class.java)
+    private val documentListener = this.injectModule(DocumentsListener::class.java)
+    private val changesEmitter = this.injectModule(ChangesEmitter::class.java)
+    private val documentUpdater = this.injectModule(DocumentUpdater::class.java)
 
     fun up() {
         this.gateway.up()
@@ -35,9 +31,5 @@ class Plugin {
         this.removeEventListeners()
     }
 
-    private fun removeEventListeners() {
-
-    }
-
-    companion object { val instance = Plugin() }
+    private fun removeEventListeners() {}
 }

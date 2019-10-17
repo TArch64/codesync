@@ -4,22 +4,27 @@ import com.intellij.openapi.editor.Document
 import ua.tarch64.changeEmitter.events.ChangesEmitterEvents
 import ua.tarch64.changeEmitter.events.ActiveDocumentChangedEvent
 import ua.tarch64.changeEmitter.events.DocumentChangedEvent
-import ua.tarch64.plugin.Plugin
 import ua.tarch64.shared.events.Events
+import ua.tarch64.shared.events.models.IEvents
+import ua.tarch64.shared.gateway.Gateway
 import ua.tarch64.shared.gateway.events.GatewayEvent
 import ua.tarch64.shared.gateway.events.GatewayEvents
 import ua.tarch64.shared.models.DocumentChanges
+import ua.tarch64.shared.moduleInjection.IInjectionModule
+import ua.tarch64.shared.moduleInjection.InjectionModule
+import ua.tarch64.shared.ui.Toasts
 
-class ChangesEmitter(private val plugin: Plugin): Events() {
+class ChangesEmitter: IInjectionModule by InjectionModule(), IEvents by Events() {
+    private val changeDocumentHandler = ChangeDocumentHandler(this)
+    private val gateway = this.injectModule(Gateway::class.java)
     private var activeDocument: Document? = null
-    private val changeDocumentHandler = ChangeDocumentHandler(this.plugin, this)
 
     fun up() {
-        this.plugin.gateway.on(GatewayEvents.DOCUMENT_CHANGED.name, this::onReceivedExternalChanges)
+        this.gateway.on(GatewayEvents.DOCUMENT_CHANGED.name, this::onReceivedExternalChanges)
 
         this.on(ChangesEmitterEvents.ACTIVE_DOCUMENT_CHANGED.name) { event: ActiveDocumentChangedEvent ->
             val gatewayEvent = GatewayEvent(GatewayEvents.SEND_DOCUMENT_CHANGES.name, event.changes.toJSON())
-            this.plugin.gateway.trigger(gatewayEvent)
+            this.gateway.trigger(gatewayEvent)
         }
     }
 

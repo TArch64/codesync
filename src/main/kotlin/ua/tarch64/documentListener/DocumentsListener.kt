@@ -6,10 +6,13 @@ import com.intellij.util.messages.MessageBusConnection
 import ua.tarch64.documentListener.events.ActiveDocumentChangedEvent
 import ua.tarch64.documentListener.events.DocumentsListenerEvents
 import ua.tarch64.shared.events.Events
+import ua.tarch64.shared.events.models.IEvents
+import ua.tarch64.shared.moduleInjection.IInjectionModule
+import ua.tarch64.shared.moduleInjection.InjectionModule
 
-class DocumentsListener: Events() {
-    private var connection: MessageBusConnection? = null
+class DocumentsListener: IEvents by Events(), IInjectionModule by InjectionModule() {
     private val fileEditorHandler = FileEditorHandler(this)
+    private var connection: MessageBusConnection? = null
 
     fun up() {
         this.connection = ApplicationManager.getApplication().messageBus.connect()

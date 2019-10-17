@@ -1,12 +1,15 @@
 package ua.tarch64.documentUpdater
 
-import ua.tarch64.plugin.Plugin
+import ua.tarch64.plugin.PluginState
 import ua.tarch64.shared.helpers.ApplicationHelper
 import ua.tarch64.shared.models.DocumentChanges
+import ua.tarch64.shared.moduleInjection.InjectionModule
 
-class DocumentUpdater(private val plugin: Plugin) {
+class DocumentUpdater: InjectionModule() {
+    private val pluginState = this.injectModule(PluginState::class.java)
+
     fun updateDocument(changes: DocumentChanges) {
-        if ( this.plugin.state.lastDocumentChanges?.isEqual(changes) == true ) { return }
+        if ( this.pluginState.lastDocumentChanges?.isEqual(changes) == true ) { return }
 
         val document = changes.fetchDocument()
 
