@@ -2,14 +2,16 @@ package ua.tarch64.changeEmitter
 
 import com.intellij.openapi.editor.event.DocumentEvent
 import com.intellij.openapi.editor.event.DocumentListener
-import ua.tarch64.changeEmitter.events.ActiveDocumentChangedEvent
 import ua.tarch64.plugin.PluginState
+import ua.tarch64.shared.dispatcher.Dispatcher
+import ua.tarch64.shared.dispatcher.events.SendDocumentChangesEvent
 import ua.tarch64.shared.helpers.DocumentHelper
 import ua.tarch64.shared.models.DocumentChanges
 import ua.tarch64.shared.moduleInjection.InjectionModule
 
-class ChangeDocumentHandler(private val changesEmitter: ChangesEmitter): InjectionModule(), DocumentListener {
+class ChangeDocumentHandler: InjectionModule(), DocumentListener {
     private val pluginState = this.injectModule(PluginState::class.java)
+    private val dispatcher = this.injectModule(Dispatcher::class.java)
 
     override fun beforeDocumentChange(event: DocumentEvent) {
         val changes = DocumentChanges(
@@ -26,7 +28,6 @@ class ChangeDocumentHandler(private val changesEmitter: ChangesEmitter): Injecti
     }
 
     private fun handleUserChanges(changes: DocumentChanges) {
-        val documentChanged = ActiveDocumentChangedEvent(changes)
-        this.changesEmitter.trigger(documentChanged)
+        this.dispatcher.trigger(SendDocumentChangesEvent(changes))
     }
 }

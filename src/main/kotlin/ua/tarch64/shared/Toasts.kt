@@ -1,9 +1,9 @@
-package ua.tarch64.shared.ui
+package ua.tarch64.shared
 
 import com.intellij.notification.Notification
 import com.intellij.notification.NotificationType
 
-enum class Type(val nativeType: NotificationType) {
+private enum class Type(val nativeType: NotificationType) {
     INFO(NotificationType.INFORMATION),
     ERROR(NotificationType.ERROR)
 }
