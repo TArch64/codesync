@@ -7,7 +7,7 @@ import ua.tarch64.shared.moduleInjection.IInjectionModule
 import ua.tarch64.shared.moduleInjection.InjectionModule
 
 class ConnectAction: AnAction(), IInjectionModule by InjectionModule() {
-    private val plugin = this.injectModule(Plugin::class.java)
-
-    override fun actionPerformed(event: AnActionEvent) = this.plugin.up()
+    override fun actionPerformed(event: AnActionEvent) {
+        this.injectModule(Plugin::class.java).up()
+    }
 }
