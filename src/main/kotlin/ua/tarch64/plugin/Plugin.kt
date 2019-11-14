@@ -11,12 +11,17 @@ import ua.tarch64.shared.moduleInjection.InjectionModule
 
 class Plugin: InjectionModule() {
     private val dispatcher = this.injectModule(Dispatcher::class.java)
+    private val pluginState = this.injectModule(PluginState::class.java)
 
     init {
         this.injectModule(Gateway::class.java)
         this.injectModule(DocumentsListener::class.java)
         this.injectModule(ChangesEmitter::class.java)
         this.injectModule(DocumentUpdater::class.java)
+    }
+
+    fun setConfig(config: PluginConfig) {
+        this.pluginState.config = config
     }
 
     fun up() = this.dispatcher.trigger(PluginUpEvent())

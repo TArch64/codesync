@@ -15,7 +15,10 @@ async function upRoomsDispatcher() {
 }
 
 function handleClientConnection(client) {
+    console.log(`Connected: ${client.id}`);
+
     client.on(DISPATCHER.INPUT_EVENT_NAME, event => {
+        console.log(event);
         client.broadcast.emit(DISPATCHER.OUTPUT_EVENT_NAME, event);
     });
 }
