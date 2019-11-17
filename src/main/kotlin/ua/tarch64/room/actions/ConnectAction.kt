@@ -16,7 +16,7 @@ class ConnectAction: AnAction(), IInjectionModule by InjectionModule() {
 
         val plugin = this.injectModule(Plugin::class.java)
         plugin.setConfig(PluginConfig(
-            gatewayServiceUrl = dialog.serviceUrlGetter()
+            gatewayServiceUrl = dialog.serviceUrl
         ))
         plugin.up()
     }
