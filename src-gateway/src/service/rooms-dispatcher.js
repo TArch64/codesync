@@ -1,8 +1,7 @@
-module.exports = { upRoomsDispatcher };
-
 const upSoket = require('socket.io');
 const { createServer } = require('http');
-const { GATEWAY_PORT, DISPATCHER } = require('./config');
+const { GATEWAY_PORT, DISPATCHER } = require('../../service-config');
+const { showDebugMessage } = require('../utils');
 
 async function upRoomsDispatcher() {
     const io = upSoket({ serveClient: false });
@@ -15,10 +14,14 @@ async function upRoomsDispatcher() {
 }
 
 function handleClientConnection(client) {
-    console.log(`Connected: ${client.id}`);
+    showDebugMessage(`Connected: ${client.id}`);
 
     client.on(DISPATCHER.INPUT_EVENT_NAME, event => {
-        console.log(event);
+        showDebugMessage(event);
         client.broadcast.emit(DISPATCHER.OUTPUT_EVENT_NAME, event);
     });
+
+    client.once('disconnect', () => showDebugMessage(`Disconnected: ${client.id}`));
 }
+
+module.exports = { upRoomsDispatcher };

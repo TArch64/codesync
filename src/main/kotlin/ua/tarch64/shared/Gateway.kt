@@ -17,7 +17,8 @@ class Gateway: PluginModule() {
     override fun up() {
         this.socket = IO.socket(this.pluginState.config.gatewayServiceUrl).connect()
         this.socket.on(UpdateDocumentEvent.NAME, this::onReceivedExternalChanges)
-        this.subscriptions = mutableListOf(
+
+        this.keepSubscriptions(
             this.dispatcher.listen(SendDocumentChangesEvent.NAME).subscribe(this::sendDocumentChanges)
         )
     }

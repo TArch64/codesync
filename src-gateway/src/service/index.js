@@ -1,5 +1,3 @@
-module.exports = { run };
-
 const { upRoomsDispatcher } = require('./rooms-dispatcher');
 const { openHttpTunnel } = require('./http-tunnel');
 
@@ -11,3 +9,5 @@ function displayServicePublicUrl({ url }) {
     console.log('Hey! Copy & Paste follow URL to connect window inside your IDE:');
     console.log(url);
 }
+
+module.exports = { run };

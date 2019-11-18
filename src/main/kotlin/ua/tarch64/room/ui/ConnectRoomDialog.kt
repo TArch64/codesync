@@ -4,7 +4,7 @@ import com.intellij.ui.layout.panel
 import ua.tarch64.shared.ui.BaseDialog
 import javax.swing.JPanel
 
-class ConnectRoomDialog: BaseDialog() {
+class ConnectRoomDialog: BaseDialog<ConnectRoomDialog>() {
     var serviceUrl: String = ""
 
     override fun render(): JPanel {

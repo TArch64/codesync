@@ -20,10 +20,17 @@ class Plugin: InjectionModule() {
         this.injectModule(DocumentUpdater::class.java)
     }
 
-    fun setConfig(config: PluginConfig) {
-        this.pluginState.config = config
+    fun configure(updateConfig: PluginConfig.() -> Unit) {
+        this.pluginState.config = PluginConfig().apply(updateConfig)
     }
 
-    fun up() = this.dispatcher.trigger(PluginUpEvent())
-    fun down() = this.dispatcher.trigger(PluginDownEvent())
+    fun up() {
+        this.dispatcher.trigger(PluginUpEvent())
+        this.pluginState.isConnectedToRoom = true
+    }
+
+    fun down() {
+        this.dispatcher.trigger(PluginDownEvent())
+        this.pluginState.isConnectedToRoom = false
+    }
 }
