@@ -1,6 +1,6 @@
 const upSoket = require('socket.io');
 const { createServer } = require('http');
-const { GATEWAY_PORT, DISPATCHER } = require('../../service-config');
+const { PORT, DISPATCHER } = require('../config');
 const { showDebugMessage } = require('../utils');
 
 async function upRoomsDispatcher() {
@@ -10,7 +10,7 @@ async function upRoomsDispatcher() {
     io.on('connection', handleClientConnection);
     io.attach(server);
 
-    return new Promise(resolve => server.listen(GATEWAY_PORT, resolve));
+    return new Promise(resolve => server.listen(PORT, resolve));
 }
 
 function handleClientConnection(client) {
