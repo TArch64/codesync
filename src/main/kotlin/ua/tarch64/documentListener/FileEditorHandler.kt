@@ -7,11 +7,10 @@ import com.intellij.openapi.vfs.VirtualFile
 import ua.tarch64.shared.dispatcher.Dispatcher
 import ua.tarch64.shared.dispatcher.events.ChangedActiveDocumentEvent
 import ua.tarch64.shared.helpers.DocumentHelper
-import ua.tarch64.shared.moduleInjection.IInjectionModule
-import ua.tarch64.shared.moduleInjection.InjectionModule
+import ua.tarch64.shared.ModuleInjector
 
-class FileEditorHandler: FileEditorManagerListener, IInjectionModule by InjectionModule() {
-    private val dispatcher = this.injectModule(Dispatcher::class.java)
+class FileEditorHandler: FileEditorManagerListener {
+    private val dispatcher: Dispatcher = ModuleInjector.inject()
 
     override fun selectionChanged(event: FileEditorManagerEvent) {
         val activeDocumentChange = ChangedActiveDocumentEvent(this.fileToDocument(event.newFile))

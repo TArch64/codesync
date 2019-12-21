@@ -4,12 +4,11 @@ import io.reactivex.disposables.Disposable
 import ua.tarch64.shared.dispatcher.Dispatcher
 import ua.tarch64.shared.dispatcher.events.PluginDownEvent
 import ua.tarch64.shared.dispatcher.events.PluginUpEvent
-import ua.tarch64.shared.moduleInjection.IInjectionModule
-import ua.tarch64.shared.moduleInjection.InjectionModule
+import ua.tarch64.shared.ModuleInjector
 
-abstract class PluginModule: IInjectionModule by InjectionModule() {
-    protected val dispatcher = this.injectModule(Dispatcher::class.java)
-    protected var subscriptions: List<Disposable>? = null
+abstract class PluginModule {
+    protected val dispatcher: Dispatcher = ModuleInjector.inject()
+    private var subscriptions: List<Disposable>? = null
 
     init {
         this.dispatcher.listen(PluginUpEvent.NAME).subscribe { this.up() }

@@ -7,17 +7,17 @@ import ua.tarch64.shared.dispatcher.Dispatcher
 import ua.tarch64.shared.dispatcher.events.PluginDownEvent
 import ua.tarch64.shared.dispatcher.events.PluginUpEvent
 import ua.tarch64.shared.Gateway
-import ua.tarch64.shared.moduleInjection.InjectionModule
+import ua.tarch64.shared.ModuleInjector
 
-class Plugin: InjectionModule() {
-    private val dispatcher = this.injectModule(Dispatcher::class.java)
-    private val pluginState = this.injectModule(PluginState::class.java)
+class Plugin {
+    private val dispatcher: Dispatcher = ModuleInjector.inject()
+    private val pluginState: PluginState = ModuleInjector.inject()
 
     init {
-        this.injectModule(Gateway::class.java)
-        this.injectModule(DocumentsListener::class.java)
-        this.injectModule(ChangesEmitter::class.java)
-        this.injectModule(DocumentUpdater::class.java)
+        ModuleInjector.inject<Gateway>()
+        ModuleInjector.inject<DocumentsListener>()
+        ModuleInjector.inject<ChangesEmitter>()
+        ModuleInjector.inject<DocumentUpdater>()
     }
 
     fun configure(updateConfig: PluginConfig.() -> Unit) {

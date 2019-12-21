@@ -5,12 +5,11 @@ import com.intellij.openapi.actionSystem.AnActionEvent
 import ua.tarch64.plugin.Plugin
 import ua.tarch64.plugin.PluginState
 import ua.tarch64.room.ui.ConnectRoomDialog
-import ua.tarch64.shared.moduleInjection.IInjectionModule
-import ua.tarch64.shared.moduleInjection.InjectionModule
+import ua.tarch64.shared.ModuleInjector
 
-class ConnectAction: AnAction(), IInjectionModule by InjectionModule() {
+class ConnectAction: AnAction() {
     override fun actionPerformed(event: AnActionEvent) = ConnectRoomDialog().onSubmit {
-        val plugin = this@ConnectAction.injectModule(Plugin::class.java)
+        val plugin: Plugin = ModuleInjector.inject()
         plugin.configure {
             gatewayServiceUrl = this@onSubmit.serviceUrl
         }
@@ -18,7 +17,7 @@ class ConnectAction: AnAction(), IInjectionModule by InjectionModule() {
     }
 
     override fun update(event: AnActionEvent) {
-        val isConnected = this.injectModule(PluginState::class.java).isConnectedToRoom
+        val isConnected = ModuleInjector.inject<PluginState>().isConnectedToRoom
         event.presentation.isEnabledAndVisible = !isConnected
     }
 }

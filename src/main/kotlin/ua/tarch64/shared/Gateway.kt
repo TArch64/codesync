@@ -11,7 +11,7 @@ import ua.tarch64.shared.dispatcher.events.UpdateDocumentEvent
 import ua.tarch64.shared.models.DocumentChanges
 
 class Gateway: PluginModule() {
-    private val pluginState = this.injectModule(PluginState::class.java)
+    private val pluginState: PluginState = ModuleInjector.inject()
     private lateinit var socket: Socket
 
     override fun up() {

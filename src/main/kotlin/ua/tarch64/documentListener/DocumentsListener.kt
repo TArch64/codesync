@@ -4,9 +4,10 @@ import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.fileEditor.FileEditorManagerListener
 import com.intellij.util.messages.MessageBusConnection
 import ua.tarch64.plugin.PluginModule
+import ua.tarch64.shared.ModuleInjector
 
 class DocumentsListener: PluginModule() {
-    private val fileEditorHandler = this.injectModule(FileEditorHandler::class.java)
+    private val fileEditorHandler: FileEditorHandler = ModuleInjector.inject()
     private lateinit var connection: MessageBusConnection
 
     override fun up() {

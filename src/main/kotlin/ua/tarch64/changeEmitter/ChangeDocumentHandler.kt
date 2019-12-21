@@ -7,11 +7,11 @@ import ua.tarch64.shared.dispatcher.Dispatcher
 import ua.tarch64.shared.dispatcher.events.SendDocumentChangesEvent
 import ua.tarch64.shared.helpers.DocumentHelper
 import ua.tarch64.shared.models.DocumentChanges
-import ua.tarch64.shared.moduleInjection.InjectionModule
+import ua.tarch64.shared.ModuleInjector
 
-class ChangeDocumentHandler: InjectionModule(), DocumentListener {
-    private val pluginState = this.injectModule(PluginState::class.java)
-    private val dispatcher = this.injectModule(Dispatcher::class.java)
+class ChangeDocumentHandler: DocumentListener {
+    private val pluginState: PluginState = ModuleInjector.inject()
+    private val dispatcher: Dispatcher = ModuleInjector.inject()
 
     override fun beforeDocumentChange(event: DocumentEvent) {
         val changes = DocumentChanges(
