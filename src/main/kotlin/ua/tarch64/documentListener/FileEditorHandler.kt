@@ -13,7 +13,12 @@ class FileEditorHandler: FileEditorManagerListener {
     private val dispatcher: Dispatcher = ModuleInjector.inject()
 
     override fun selectionChanged(event: FileEditorManagerEvent) {
-        val activeDocumentChange = ChangedActiveDocumentEvent(this.fileToDocument(event.newFile))
+        val document = this.fileToDocument(event.newFile)
+        this.onDocumentSelected(document)
+    }
+
+    fun onDocumentSelected(document: Document?) {
+        val activeDocumentChange = ChangedActiveDocumentEvent(document)
         this.dispatcher.trigger(activeDocumentChange)
     }
 

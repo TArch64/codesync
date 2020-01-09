@@ -13,4 +13,10 @@ object ApplicationHelper {
     fun runWriteAction(action: () -> Unit) {
         WriteCommandAction.runWriteCommandAction(ProjectHelper.active(), action)
     }
+
+    fun <T> runEventAction(action: () -> T): T? {
+        var actionResult: T? = null
+        ApplicationManager.getApplication().invokeAndWait { actionResult = action() }
+        return actionResult
+    }
 }

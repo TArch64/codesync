@@ -1,10 +1,12 @@
-const localtunnel = require('localtunnel');
+const ngrok = require('ngrok');
 const { PORT } = require('../config');
 const { tryAsyncAction } = require('../utils');
 
-async function openHttpTunnel() {
-    return tryAsyncAction(10, () => {
-        return localtunnel({ port: PORT }).then(tunnel => ({ url: tunnel.url }));
+function openHttpTunnel() {
+    return tryAsyncAction(10, async () => {
+        return {
+            url: await ngrok.connect({ addr: PORT })
+        };
     });
 }
 
