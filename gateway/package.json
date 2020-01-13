@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "export NODE_ENV=development; node ./gateway.js",
+    "start": "node ./gateway.js",
     "build": "pkg --out-path ../build/gateway/ ./gateway.js"
   },
   "dependencies": {
