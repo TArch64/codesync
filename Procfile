@@ -1,1 +1,1 @@
-web: node ./gateway/gateway.js
+gateway: node ./gateway/gateway.js
