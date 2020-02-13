@@ -8,4 +8,4 @@ const { ServiceRoot } = require('./src');
 require('http').createServer((req, res) => {
     res.write('Hello World!');
     res.end();
-}).listen(2000);
+}).listen(2000, () => console.log('Gateway successfully started'));
