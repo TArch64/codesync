@@ -5,7 +5,9 @@ const { ServiceRoot } = require('./src');
 //     process.exit(1);
 // });
 
+const port = process.env.PORT || 2000;
+
 require('http').createServer((req, res) => {
     res.write('Hello World!');
     res.end();
-}).listen(2000, () => console.log('Gateway successfully started'));
+}).listen(port, () => console.log('Gateway successfully started at ' + port));
