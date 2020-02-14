@@ -11,4 +11,4 @@ hs_err_pid*
 gradle-app.setting
 !gradle-wrapper.jar
 .gradletasknamecache
-gateway/node_modules
+/node_modules/

@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "esModuleInterop": false,
+    "strict": true,
+    "removeComments": true,
+    "target": "esnext",
+    "outDir": "./build/gateway"
+  },
+  "include": [
+    "./src/gateway/**/*"
+  ]
+}
