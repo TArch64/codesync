@@ -1,6 +1,6 @@
 import * as useSocket from 'socket.io';
 import { createServer } from 'http';
-import { Config } from '../shared';
+import { Config } from '../config';
 import { ApiRooms, ApiModule } from './modules';
 import { Event, EventContext } from './models';
 import { KeepAliveHeroku } from './KeepAliveHeroku';

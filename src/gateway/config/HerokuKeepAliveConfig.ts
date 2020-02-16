@@ -7,7 +7,7 @@ export class HerokuKeepAliveConfig {
 
     constructor(private root: Config) {}
 
-    public isEndpoint(path: string): boolean {
+    public isKeepAliveEndpoint(path: string): boolean {
         return this.endpoint === path;
     }
 }

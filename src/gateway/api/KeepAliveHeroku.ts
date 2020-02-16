@@ -1,5 +1,5 @@
 import { IncomingMessage, ServerResponse, RequestListener, get } from 'http';
-import { Config } from '../shared';
+import { Config } from '../config';
 
 export class KeepAliveHeroku {
     constructor(private config: Config) {}
@@ -7,8 +7,7 @@ export class KeepAliveHeroku {
     public get requestHandler(): RequestListener {
         this.scheduleNextRequest();
         return (request: IncomingMessage, response: ServerResponse): void => {
-            if ( this.config.heroku.keepAlive.isEndpoint(request.url!) ) console.log('keep alive request');
-            if ( this.config.heroku.keepAlive.isEndpoint(request.url!) ) this.scheduleNextRequest();
+            if ( this.config.heroku.keepAlive.isKeepAliveEndpoint(request.url!) ) this.scheduleNextRequest();
             response.end('Service works');
         }
     }

@@ -1,4 +1,4 @@
-import { Config } from './shared';
+import { Config } from './config';
 import { ApiRoot } from './api';
 
 export class ServiceRoot {
@@ -12,6 +12,6 @@ export class ServiceRoot {
 
     async up(): Promise<void> {
         await this.api.up();
-        console.log(`Service successfully started at http://localhost:${this.config.port}`);
+        console.log(`Service successfully started at ${this.config.appUrl}`);
     }
 }
