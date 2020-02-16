@@ -5,8 +5,7 @@
   "license": "MIT",
   "scripts": {
     "start": "npm run build && node ./build/gateway/gateway.js",
-    "build": "tsc",
-    "postinstall": "npm run build"
+    "build": "tsc"
   },
   "dependencies": {
     "socket.io": "^2.3.0"
