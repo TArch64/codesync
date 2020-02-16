@@ -8,10 +8,8 @@
     "build": "tsc"
   },
   "dependencies": {
-    "socket.io": "^2.3.0"
-  },
-  "devDependencies": {
-    "@types/socket.io": "^2.1.4",
-    "typescript": "^3.7.5"
+    "socket.io": "^2.3.0",
+    "typescript": "^3.7.5",
+    "@types/socket.io": "^2.1.4"
   }
 }
