@@ -15,7 +15,7 @@ export class ApiRoot {
 
         io.on('connection', this.handleSocketConnection.bind(this));
 
-        return new Promise(resolve => server.listen(this.config.port, resolve));
+        return new Promise(resolve => server.listen(this.config.server.port, resolve));
     }
 
     private handleSocketConnection(socket: useSocket.Socket): void {

@@ -1,22 +1,29 @@
 import { IncomingMessage, ServerResponse, RequestListener, get } from 'http';
+import { get as secureGet } from 'https';
 import { Config } from '../config';
 
 export class KeepAliveHeroku {
-    constructor(private config: Config) {}
+    private readonly sendRequest: typeof get | typeof secureGet;
+
+    constructor(private config: Config) {
+        this.sendRequest = this.config.server.isSecureConnection ? secureGet : get;
+    }
 
     public get requestHandler(): RequestListener {
         this.scheduleNextRequest();
         return (request: IncomingMessage, response: ServerResponse): void => {
-            if ( this.config.heroku.keepAlive.isKeepAliveEndpoint(request.url!) ) this.scheduleNextRequest();
+            const isKeepAliveRequest = this.config.heroku.keepAlive.isKeepAliveEndpoint(request.url!);
+            if ( isKeepAliveRequest ) this.scheduleNextRequest();
             response.end('Service works');
         }
     }
 
     private scheduleNextRequest(): void {
-        setTimeout(() => this.makeRequest(), this.config.heroku.keepAlive.requestInterval);
+        const interval = this.config.heroku.keepAlive.requestInterval;
+        setTimeout(() => this.makeRequest(), interval);
     }
 
     private makeRequest() {
-        get(this.config.heroku.keepAlive.absoluteEndpointUrl);
+        this.sendRequest(this.config.heroku.keepAlive.absoluteEndpointUrl);
     }
 }

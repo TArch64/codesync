@@ -12,6 +12,6 @@ export class ServiceRoot {
 
     async up(): Promise<void> {
         await this.api.up();
-        console.log(`Service successfully started at ${this.config.appUrl}`);
+        console.log(`Service successfully started at ${this.config.server.appUrl}`);
     }
 }

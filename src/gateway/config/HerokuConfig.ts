@@ -1,8 +1,9 @@
-import { Config } from './Config';
 import { HerokuKeepAliveConfig } from './HerokuKeepAliveConfig';
+import { TimeConfig } from './TimeConfig';
+import { ServerConfig } from './ServerConfig';
 
 export class HerokuConfig {
-    public keepAlive = new HerokuKeepAliveConfig(this.root);
+    public keepAlive = new HerokuKeepAliveConfig(this.time, this.server);
 
-    constructor(private root: Config) {}
+    constructor(private time: TimeConfig, private server: ServerConfig) {}
 }
