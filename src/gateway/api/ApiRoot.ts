@@ -24,7 +24,7 @@ export class ApiRoot {
 
     private createApiEvents(): Event<any>[] {
         const modules: ApiModule[] = [
-            new ApiRooms('rooms')
+            new ApiRooms()
         ];
 
         return modules.flatMap((module: ApiModule) => module.namespacedEventsList);

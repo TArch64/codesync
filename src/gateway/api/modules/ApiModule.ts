@@ -1,13 +1,14 @@
 import { Event, EventContext, EventHandler } from '../models';
 
 export abstract class ApiModule {
-    private events = new Map<string, EventHandler<any>>();
+    private readonly events = new Map<string, EventHandler<any>>();
+    protected abstract namespace: string;
 
-    constructor(private namespace: string) {
+    constructor() {
         this.up();
     }
 
-    abstract up(): void;
+    protected abstract up(): void;
 
     protected useEvent<Payload = object>(eventName: string, handler: EventHandler<Payload>): void {
         if ( this.events.has(eventName) ) throw `Duplicated event handler for "${eventName}"`;
@@ -15,7 +16,7 @@ export abstract class ApiModule {
         this.events.set(eventName, (context: EventContext<Payload>) => handler(context));
     }
 
-    get namespacedEventsList(): Event<object>[] {
+    public get namespacedEventsList(): Event<object>[] {
         const eventsList: Event<object>[] = [];
         this.events.forEach((handler: EventHandler<object>, name) => {
             const namespacedName = `${this.namespace}::${name}`;

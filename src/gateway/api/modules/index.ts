@@ -1,2 +1,2 @@
 export { ApiModule } from './ApiModule';
-export { ApiRooms } from './ApiRooms';
+export { ApiRooms } from './rooms/ApiRooms';
