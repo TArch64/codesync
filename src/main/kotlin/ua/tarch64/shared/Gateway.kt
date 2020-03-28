@@ -5,6 +5,8 @@ import io.socket.client.Socket
 import org.json.JSONObject
 import ua.tarch64.plugin.PluginModule
 import ua.tarch64.plugin.PluginState
+import ua.tarch64.shared.dispatcher.events.CreateRoomEvent
+import ua.tarch64.shared.dispatcher.events.RoomCreatedEvent
 import ua.tarch64.shared.dispatcher.Event as DispatcherEvent
 import ua.tarch64.shared.dispatcher.events.SendDocumentChangesEvent
 import ua.tarch64.shared.dispatcher.events.UpdateDocumentEvent
@@ -17,10 +19,13 @@ class Gateway: PluginModule() {
     override fun up() {
         this.socket = IO.socket(this.pluginState.config.gatewayServiceUrl).connect()
         this.socket.on(UpdateDocumentEvent.NAME, this::onReceivedExternalChanges)
+        this.dispatcher.listen(SendDocumentChangesEvent.NAME).subscribe(this::sendDocumentChanges)
 
-        this.keepSubscriptions(
-            this.dispatcher.listen(SendDocumentChangesEvent.NAME).subscribe(this::sendDocumentChanges)
-        )
+        // Rooms events
+        this.dispatcher.listen(CreateRoomEvent.NAME).subscribe {
+            this@Gateway.socket.emit(it.name)
+        }
+        this.socket.on(RoomCreatedEvent.NAME, this::onCreatedRoom)
     }
 
     private fun sendDocumentChanges(event: DispatcherEvent) {
@@ -35,8 +40,14 @@ class Gateway: PluginModule() {
     }
 
     override fun down() {
-        this.disposeSubscriptions()
         this.socket.off(UpdateDocumentEvent.NAME, this::onReceivedExternalChanges)
         this.socket = this.socket.disconnect()
+    }
+
+    // Rooms handlers
+
+    private fun onCreatedRoom(vararg args: Any) {
+        val roomId: String = (args.first() as JSONObject).getString("roomId")
+        this.dispatcher.trigger(RoomCreatedEvent(roomId))
     }
 }

@@ -11,10 +11,10 @@ import ua.tarch64.shared.models.DocumentChanges
 class DocumentUpdater: PluginModule() {
     private val pluginState: PluginState = ModuleInjector.inject()
 
-    override fun down() = this.disposeSubscriptions()
-    override fun up() = this.keepSubscriptions(
+    override fun down() = Unit
+    override fun up() {
         this.dispatcher.listen(UpdateDocumentEvent.NAME).subscribe(this::updateDocument)
-    )
+    }
 
     private fun updateDocument(event: Event) {
         val changes = event.payload as DocumentChanges

@@ -1,3 +1,4 @@
+import { v4 as generateUuidV4 } from 'uuid';
 import { ApiModule } from '../ApiModule';
 import { EventContext } from '../../models';
 import { RoomEventPayload } from './models/RoomEventPayload';
@@ -12,29 +13,34 @@ export class ApiRooms extends ApiModule {
         this.useEvent('leave', this.leave);
     }
 
-    public create(context: EventContext<void>): void {
-        this.currentRoomId = this.generateUniqRoomId(context.socket.client.id);
-        context.socket.emit('created', {
-            roomId: this.currentRoomId
+    public create(): void {
+        this.currentRoomId = generateUuidV4();
+        this.emit({
+            eventName: 'created',
+            useCurrentNamespace: true,
+            payload: { roomId: this.currentRoomId }
         });
-    }
-
-    private generateUniqRoomId(clientId: string): string {
-        const payload = { clientId, createdAt: Date.now() };
-        return btoa(JSON.stringify(payload));
     }
 
     public connect(context: EventContext<RoomEventPayload>): void {
         this.currentRoomId = context.payload!.roomId;
         context.socket.join(this.currentRoomId);
-        context.socket.in(this.currentRoomId).broadcast.emit('connected', {
-            username: context.payload!.username
-        })
+        this.emit({
+            eventName:'connected',
+            useCurrentNamespace: true,
+            room: this.currentRoomId,
+            broadcast: true,
+            payload: { username: context.payload!.username }
+        });
     }
 
     public leave(context: EventContext<RoomEventPayload>): void {
-        context.socket.in(this.currentRoomId).broadcast.emit('disconnected', {
-            username: context.payload!.username
+        this.emit({
+            eventName: 'disconnected',
+            useCurrentNamespace: true,
+            room: this.currentRoomId,
+            broadcast: true,
+            payload: { username: context.payload!.username }
         });
         context.socket.leave(this.currentRoomId);
         this.currentRoomId = '';

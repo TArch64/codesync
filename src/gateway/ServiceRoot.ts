@@ -1,13 +1,16 @@
 import { Config } from './config';
 import { ApiRoot } from './api';
+import { Logger } from "./Logger";
 
 export class ServiceRoot {
     private readonly config: Config;
+    private readonly logger: Logger;
     private readonly api: ApiRoot;
 
     constructor() {
         this.config = new Config();
-        this.api = new ApiRoot(this.config);
+        this.logger = new Logger();
+        this.api = new ApiRoot(this.config, this.logger);
     }
 
     async up(): Promise<void> {

@@ -24,7 +24,7 @@ class DocumentsListener: PluginModule() {
 
     private fun activeDocument(): Document? {
         return ApplicationHelper.runEventAction {
-            FileEditorManager.getInstance(ProjectHelper.active()).selectedTextEditor!!.document
+            FileEditorManager.getInstance(ProjectHelper.active()).selectedTextEditor?.document
         }
     }
 

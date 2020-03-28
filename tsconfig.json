@@ -2,7 +2,7 @@
   "compilerOptions": {
     "module": "CommonJS",
     "moduleResolution": "node",
-    "esModuleInterop": false,
+    "esModuleInterop": true,
     "strict": true,
     "removeComments": true,
     "target": "esnext",

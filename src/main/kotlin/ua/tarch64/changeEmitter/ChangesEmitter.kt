@@ -10,10 +10,10 @@ class ChangesEmitter: PluginModule() {
     private val changeDocumentHandler: ChangeDocumentHandler = ModuleInjector.inject()
     private var activeDocument: Document? = null
 
-    override fun down() = this.disposeSubscriptions()
-    override fun up() = this.keepSubscriptions(
+    override fun down() = Unit
+    override fun up() {
         this.dispatcher.listen(ChangedActiveDocumentEvent.NAME).subscribe(this::changeActiveDocument)
-    )
+    }
 
     private fun changeActiveDocument(event: Event) {
         this.removeDocumentListener()
