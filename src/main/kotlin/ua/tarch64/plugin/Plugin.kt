@@ -31,11 +31,9 @@ class Plugin {
 
     fun up() {
         this.dispatcher.trigger(PluginUpEvent())
-        this.pluginState.isConnectedToRoom = true
     }
 
     fun down() {
         this.dispatcher.trigger(PluginDownEvent())
-        this.pluginState.isConnectedToRoom = false
     }
 }

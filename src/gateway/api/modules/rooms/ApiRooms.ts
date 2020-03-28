@@ -10,7 +10,7 @@ export class ApiRooms extends ApiModule {
 
     up() {
         this.useEvent('create', this.create);
-        this.useEvent('connect', this.join);
+        this.useEvent('join', this.join);
         this.useEvent('leave', this.leave);
     }
 
@@ -23,9 +23,9 @@ export class ApiRooms extends ApiModule {
             roomId: generateUuidV4(),
             username: context.payload!.username
         };
+        this.socket.join(this.currentRoomId);
         this.emit({
             eventName: 'created',
-            useCurrentNamespace: true,
             payload: { roomId: this.currentRoomId }
         });
     }
@@ -37,8 +37,11 @@ export class ApiRooms extends ApiModule {
         };
         this.socket.join(this.currentRoomId);
         this.emit({
-            eventName: 'connected',
-            useCurrentNamespace: true,
+            eventName: 'joined',
+            payload: { roomId: this.currentRoomId }
+        });
+        this.emit({
+            eventName: 'collaborator::joined',
             room: this.currentRoomId,
             broadcast: true,
             payload: { username: this.username }
@@ -47,8 +50,7 @@ export class ApiRooms extends ApiModule {
 
     public leave(): void {
         this.emit({
-            eventName: 'disconnected',
-            useCurrentNamespace: true,
+            eventName: 'left',
             room: this.currentRoomId,
             broadcast: true,
             payload: { username: this.username }

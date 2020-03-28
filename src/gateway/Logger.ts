@@ -1,6 +1,8 @@
 export class Logger {
     public exec(name: string, data: any): void {
-        console.log(' \n'.repeat(3));
+        console.log('.\n'.repeat(2));
+        console.log(new Date().toUTCString());
+        console.log('.\n');
         console.log(`api_event: ${name}`);
         if (data) this.log('event_payload', data);
     }

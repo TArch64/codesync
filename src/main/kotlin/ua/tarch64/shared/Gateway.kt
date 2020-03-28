@@ -5,11 +5,10 @@ import io.socket.client.Socket
 import org.json.JSONObject
 import ua.tarch64.plugin.PluginModule
 import ua.tarch64.plugin.PluginState
-import ua.tarch64.shared.dispatcher.events.CreateRoomEvent
-import ua.tarch64.shared.dispatcher.events.RoomCreatedEvent
 import ua.tarch64.shared.dispatcher.Event as DispatcherEvent
 import ua.tarch64.shared.dispatcher.events.SendDocumentChangesEvent
 import ua.tarch64.shared.dispatcher.events.UpdateDocumentEvent
+import ua.tarch64.shared.dispatcher.events.rooms.*
 import ua.tarch64.shared.models.DocumentChanges
 
 class Gateway: PluginModule() {
@@ -22,8 +21,12 @@ class Gateway: PluginModule() {
         this.dispatcher.listen(SendDocumentChangesEvent.NAME).subscribe(this::sendDocumentChanges)
 
         // Rooms events
-        this.dispatcher.listen(CreateRoomEvent.NAME).subscribe(this::onCreateRoom)
+        this.dispatcher.listen(RoomCreateEvent.NAME).subscribe(this::onCreateRoom)
         this.socket.on(RoomCreatedEvent.NAME, this::onCreatedRoom)
+
+        this.dispatcher.listen(RoomJoinEvent.NAME).subscribe(this::onJoinRoom)
+        this.socket.on(RoomJoinedEvent.NAME, this::onJoinedRoom)
+        this.socket.on(RoomCollaboratorJoinedEvent.NAME, this::onJoinedCollaboratorRoom)
     }
 
     private fun sendDocumentChanges(event: DispatcherEvent) {
@@ -45,13 +48,27 @@ class Gateway: PluginModule() {
     // Rooms handlers
 
     private fun onCreateRoom(event: DispatcherEvent) {
-        val json = JSONObject()
-        json.put("username", event.payload)
+        val json = (event.payload as RoomCreateEventPayload).toJSON()
         this.socket.emit(event.name, json)
     }
 
     private fun onCreatedRoom(vararg args: Any) {
-        val roomId: String = (args.first() as JSONObject).getString("roomId")
-        this.dispatcher.trigger(RoomCreatedEvent(roomId))
+        val event = RoomCreatedEvent.fromJSON(args.first() as JSONObject)
+        this.dispatcher.trigger(event)
+    }
+
+    private fun onJoinRoom(event: DispatcherEvent) {
+        val json = (event.payload as RoomJoinEventPayload).toJSON()
+        this.socket.emit(event.name, json)
+    }
+
+    private fun onJoinedRoom(vararg args: Any) {
+        val event = RoomJoinedEvent.fromJSON(args.first() as JSONObject)
+        this.dispatcher.trigger(event)
+    }
+
+    private fun onJoinedCollaboratorRoom(vararg args: Any) {
+        val event = RoomCollaboratorJoinedEvent.fromJSON(args.first() as JSONObject)
+        this.dispatcher.trigger(event)
     }
 }

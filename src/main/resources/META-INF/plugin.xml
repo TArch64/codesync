@@ -17,8 +17,8 @@
     <actions>
         <group id="ua.TArch64.codesync" text="CodeSync" popup="true">
             <add-to-group group-id="ToolsMenu" anchor="last"/>
-            <action id="ua.TArch64.codesync.room.connect" class="ua.tarch64.room.actions.ConnectAction" text="Connect to Room"/>
             <action id="ua.TArch64.codesync.room.create" class="ua.tarch64.room.actions.CreateAction" text="Create Room"/>
+            <action id="ua.TArch64.codesync.room.join" class="ua.tarch64.room.actions.JoinAction" text="Join to Room"/>
             <action id="ua.TArch64.codesync.room.disconnect" class="ua.tarch64.room.actions.DisconnectAction" text="Disconnect from Room"/>
         </group>
     </actions>

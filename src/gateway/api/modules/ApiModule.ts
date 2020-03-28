@@ -29,12 +29,21 @@ export abstract class ApiModule {
     }
 
     protected emit(options: IEmitResponseOptions): void {
+        options = this.prepareEmitOptions(options);
         let socket: Socket = this.socket;
         if (options.room) socket = socket.in(options.room);
         if (options.broadcast) socket = socket.broadcast;
         if (options.useCurrentNamespace) options.eventName = this.makeNamespacedEventName(options.eventName);
         socket.emit(options.eventName, options.payload);
         this.logger.exec(options.eventName, options.payload);
+    }
+
+    private prepareEmitOptions(options: IEmitResponseOptions): IEmitResponseOptions {
+        return {
+            useCurrentNamespace: true,
+            broadcast: false,
+            ...options
+        };
     }
 
     public get namespacedEventsList(): Event<object>[] {

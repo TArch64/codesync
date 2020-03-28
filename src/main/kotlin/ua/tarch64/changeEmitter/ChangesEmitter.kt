@@ -10,7 +10,6 @@ class ChangesEmitter: PluginModule() {
     private val changeDocumentHandler: ChangeDocumentHandler = ModuleInjector.inject()
     private var activeDocument: Document? = null
 
-    override fun down() = Unit
     override fun up() {
         this.dispatcher.listen(ChangedActiveDocumentEvent.NAME).subscribe(this::changeActiveDocument)
     }

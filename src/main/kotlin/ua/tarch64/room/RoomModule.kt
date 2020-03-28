@@ -5,25 +5,47 @@ import ua.tarch64.plugin.PluginModule
 import ua.tarch64.shared.ModuleInjector
 import ua.tarch64.shared.Toasts
 import ua.tarch64.shared.dispatcher.Event
-import ua.tarch64.shared.dispatcher.events.CreateRoomEvent
-import ua.tarch64.shared.dispatcher.events.RoomCreatedEvent
+import ua.tarch64.shared.dispatcher.events.rooms.*
 
 class RoomModule: PluginModule() {
     private val toasts: Toasts = ModuleInjector.inject()
     private val config: PluginConfig = ModuleInjector.inject()
 
-    override fun down() = Unit
     override fun up() {
         this.dispatcher.listen(RoomCreatedEvent.NAME).subscribe(this::onRoomCreated)
+        this.dispatcher.listen(RoomJoinedEvent.NAME).subscribe(this::onJoined)
+        this.dispatcher.listen(RoomCollaboratorJoinedEvent.NAME).subscribe(this::onCollaboratorJoined)
     }
 
     fun createRoom() {
-        val username = this.config.username
-        this.dispatcher.trigger(CreateRoomEvent(username))
+        val event = RoomCreateEvent(RoomCreateEventPayload(
+            username = this.config.username
+        ))
+        this.dispatcher.trigger(event)
     }
 
     private fun onRoomCreated(event: Event) {
-        val roomId = event.payload as String
+        val roomId = (event.payload as RoomCreatedEventPayload).roomId
+        this.config.roomId = roomId
         this.toasts.notifyInfo("Created room:\n $roomId")
+    }
+
+    fun join(roomId: String) {
+        val event = RoomJoinEvent(RoomJoinEventPayload(
+            username = this.config.username,
+            roomId = roomId
+        ))
+        this.dispatcher.trigger(event)
+    }
+
+    private fun onJoined(event: Event) {
+        val roomId = (event.payload as RoomJoinedEventPayload).roomId
+        this.config.roomId = roomId
+        this.toasts.notifyInfo("Joined to room")
+    }
+
+    private fun onCollaboratorJoined(event: Event) {
+        val username = (event.payload as RoomCollaboratorJoinedEventPayload).username
+        this.toasts.notifyInfo("$username has joined to room")
     }
 }
