@@ -10,9 +10,7 @@
   "dependencies": {
     "socket.io": "^2.3.0",
     "typescript": "^3.7.5",
-    "uuid": "^7.0.0"
-  },
-  "devDependencies": {
+    "uuid": "^7.0.0",
     "@types/socket.io": "^2.1.4",
     "@types/uuid": "^3.4.7"
   }
