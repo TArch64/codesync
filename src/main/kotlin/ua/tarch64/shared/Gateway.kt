@@ -22,9 +22,7 @@ class Gateway: PluginModule() {
         this.dispatcher.listen(SendDocumentChangesEvent.NAME).subscribe(this::sendDocumentChanges)
 
         // Rooms events
-        this.dispatcher.listen(CreateRoomEvent.NAME).subscribe {
-            this@Gateway.socket.emit(it.name)
-        }
+        this.dispatcher.listen(CreateRoomEvent.NAME).subscribe(this::onCreateRoom)
         this.socket.on(RoomCreatedEvent.NAME, this::onCreatedRoom)
     }
 
@@ -40,11 +38,17 @@ class Gateway: PluginModule() {
     }
 
     override fun down() {
-        this.socket.off(UpdateDocumentEvent.NAME, this::onReceivedExternalChanges)
+        this.socket.off()
         this.socket = this.socket.disconnect()
     }
 
     // Rooms handlers
+
+    private fun onCreateRoom(event: DispatcherEvent) {
+        val json = JSONObject()
+        json.put("username", event.payload)
+        this.socket.emit(event.name, json)
+    }
 
     private fun onCreatedRoom(vararg args: Any) {
         val roomId: String = (args.first() as JSONObject).getString("roomId")

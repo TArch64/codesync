@@ -1,5 +1,6 @@
 package ua.tarch64.plugin
 
 class PluginConfig {
-    var gatewayServiceUrl: String = "http://localhost:5000"
+    var gatewayServiceUrl: String = "https://tarch64.ngrok.io"
+    val username: String = System.getenv("USER")
 }

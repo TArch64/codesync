@@ -7,11 +7,13 @@ export abstract class ApiModule {
     private readonly events = new Map<string, EventHandler<any>>();
     protected abstract namespace: string;
 
-    constructor(private socket: Socket, private logger: Logger) {
+    constructor(protected socket: Socket, private logger: Logger) {
         this.up();
+        this.socket.on('disconnect', this.down.bind(this));
     }
 
     protected abstract up(): void;
+    protected down(): void {};
 
     protected useEvent<Payload = object>(eventName: string, handler: EventHandler<Payload>): void {
         if ( this.events.has(eventName) ) throw `Duplicated event handler for "${eventName}"`;

@@ -1,20 +1,28 @@
 import { v4 as generateUuidV4 } from 'uuid';
 import { ApiModule } from '../ApiModule';
 import { EventContext } from '../../models';
-import { RoomEventPayload } from './models/RoomEventPayload';
+import { CreateRoomEventPayload, JoinRoomEventPayload, Userdata } from './models';
 
 export class ApiRooms extends ApiModule {
     private currentRoomId: string = '';
+    private username: string = '';
     protected namespace: string = 'rooms';
 
     up() {
         this.useEvent('create', this.create);
-        this.useEvent('connect', this.connect);
+        this.useEvent('connect', this.join);
         this.useEvent('leave', this.leave);
     }
 
-    public create(): void {
-        this.currentRoomId = generateUuidV4();
+    protected down(): void {
+        this.leave();
+    }
+
+    public create(context: EventContext<CreateRoomEventPayload>): void {
+        this.userdata = {
+            roomId: generateUuidV4(),
+            username: context.payload!.username
+        };
         this.emit({
             eventName: 'created',
             useCurrentNamespace: true,
@@ -22,27 +30,35 @@ export class ApiRooms extends ApiModule {
         });
     }
 
-    public connect(context: EventContext<RoomEventPayload>): void {
-        this.currentRoomId = context.payload!.roomId;
-        context.socket.join(this.currentRoomId);
+    public join(context: EventContext<JoinRoomEventPayload>): void {
+        this.userdata = {
+            roomId: context.payload!.roomId,
+            username: context.payload!.username
+        };
+        this.socket.join(this.currentRoomId);
         this.emit({
-            eventName:'connected',
+            eventName: 'connected',
             useCurrentNamespace: true,
             room: this.currentRoomId,
             broadcast: true,
-            payload: { username: context.payload!.username }
+            payload: { username: this.username }
         });
     }
 
-    public leave(context: EventContext<RoomEventPayload>): void {
+    public leave(): void {
         this.emit({
             eventName: 'disconnected',
             useCurrentNamespace: true,
             room: this.currentRoomId,
             broadcast: true,
-            payload: { username: context.payload!.username }
+            payload: { username: this.username }
         });
-        context.socket.leave(this.currentRoomId);
-        this.currentRoomId = '';
+        this.socket.leave(this.currentRoomId);
+        this.userdata = { username: '', roomId: '' };
+    }
+
+    private set userdata(data: Userdata) {
+        this.currentRoomId = data.roomId;
+        this.username = data.username;
     }
 }

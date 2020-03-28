@@ -1,4 +1,4 @@
-import useSocket from 'socket.io';
+import useSocket, { Socket } from 'socket.io';
 import { createServer } from 'http';
 import { Config } from '../config';
 import { ApiRooms } from './modules';
@@ -19,15 +19,15 @@ export class ApiRoot {
         return new Promise(resolve => server.listen(this.config.server.port, resolve));
     }
 
-    private handleSocketConnection(socket: useSocket.Socket): void {
+    private handleSocketConnection(socket: Socket): void {
         this.createApiEvents(socket).forEach((event: Event<any>) => this.listenEvent(socket, event))
     }
 
-    private createApiEvents(socket: useSocket.Socket): Event<any>[] {
+    private createApiEvents(socket: Socket): Event<any>[] {
         return new ApiRooms(socket, this.logger).namespacedEventsList;
     }
 
-    private listenEvent(socket: useSocket.Socket, event: Event<any>): void {
+    private listenEvent(socket: Socket, event: Event<any>): void {
         socket.on(event.name, (payload: any) => {
             event.handler(new EventContext<any>(socket, payload));
         })
