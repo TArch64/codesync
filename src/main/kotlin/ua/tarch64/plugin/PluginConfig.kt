@@ -6,4 +6,5 @@ class PluginConfig {
     var roomId: String = ""
 
     fun isConnectedToRoom() = this.roomId.isNotEmpty()
+    fun resetRoomData() { this.roomId = "" }
 }

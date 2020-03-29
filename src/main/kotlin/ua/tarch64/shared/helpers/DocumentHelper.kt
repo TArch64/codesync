@@ -11,13 +11,12 @@ object DocumentHelper {
     }
 
     fun documentByRelativePath(path: String): Document {
-        val virtualFile = VfsUtilCore.findRelativeFile(path, ProjectHelper.active().baseDir)
+        val virtualFile = VfsUtilCore.findRelativeFile(path, ProjectHelper.rootDir())
         return document(virtualFile!!)
     }
 
     fun relativePath(document: Document): String {
-        val file = this.file(document)
-        return VfsUtilCore.getRelativePath(file, ProjectHelper.active().baseDir)!!
+        return VfsUtilCore.getRelativePath(this.file(document), ProjectHelper.rootDir())!!
     }
 
     private fun file(document: Document): VirtualFile {

@@ -62,7 +62,7 @@ class RoomModule: PluginModule() {
 
     private fun onLeft(event: Event) {
         this.toasts.notifyInfo("Successfully left from room")
-        this.config.roomId = ""
+        this.config.resetRoomData()
         ModuleInjector.inject<Plugin>().down()
     }
 
