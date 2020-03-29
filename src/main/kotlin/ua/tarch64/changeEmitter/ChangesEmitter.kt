@@ -3,8 +3,8 @@ package ua.tarch64.changeEmitter
 import com.intellij.openapi.editor.Document
 import ua.tarch64.plugin.PluginModule
 import ua.tarch64.shared.ModuleInjector
-import ua.tarch64.shared.dispatcher.Event
-import ua.tarch64.shared.dispatcher.events.ChangedActiveDocumentEvent
+import ua.tarch64.dispatcher.Event
+import ua.tarch64.dispatcher.events.ChangedActiveDocumentEvent
 
 class ChangesEmitter: PluginModule() {
     private val changeDocumentHandler: ChangeDocumentHandler = ModuleInjector.inject()

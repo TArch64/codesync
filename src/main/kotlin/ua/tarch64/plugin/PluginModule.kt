@@ -1,6 +1,6 @@
 package ua.tarch64.plugin
 
-import ua.tarch64.shared.dispatcher.Dispatcher
+import ua.tarch64.dispatcher.Dispatcher
 import ua.tarch64.shared.ModuleInjector
 
 abstract class PluginModule {

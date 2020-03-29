@@ -4,9 +4,9 @@ import ua.tarch64.changeEmitter.ChangesEmitter
 import ua.tarch64.documentListener.DocumentsListener
 import ua.tarch64.DocumentUpdater
 import ua.tarch64.room.RoomModule
-import ua.tarch64.shared.dispatcher.Dispatcher
-import ua.tarch64.shared.dispatcher.events.PluginDownEvent
-import ua.tarch64.shared.dispatcher.events.PluginUpEvent
+import ua.tarch64.dispatcher.Dispatcher
+import ua.tarch64.dispatcher.events.PluginDownEvent
+import ua.tarch64.dispatcher.events.PluginUpEvent
 import ua.tarch64.shared.Gateway
 import ua.tarch64.shared.ModuleInjector
 

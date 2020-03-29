@@ -1,9 +1,9 @@
-package ua.tarch64.shared.dispatcher
+package ua.tarch64.dispatcher
 
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
-import ua.tarch64.shared.dispatcher.events.PluginDownEvent
-import ua.tarch64.shared.dispatcher.events.PluginUpEvent
+import ua.tarch64.dispatcher.events.PluginDownEvent
+import ua.tarch64.dispatcher.events.PluginUpEvent
 
 class Dispatcher {
     private val events = BehaviorSubject.create<Event>()

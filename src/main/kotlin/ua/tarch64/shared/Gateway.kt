@@ -5,10 +5,10 @@ import io.socket.client.Socket
 import org.json.JSONObject
 import ua.tarch64.plugin.PluginModule
 import ua.tarch64.plugin.PluginState
-import ua.tarch64.shared.dispatcher.Event as DispatcherEvent
-import ua.tarch64.shared.dispatcher.events.SendDocumentChangesEvent
-import ua.tarch64.shared.dispatcher.events.UpdateDocumentEvent
-import ua.tarch64.shared.dispatcher.events.rooms.*
+import ua.tarch64.dispatcher.Event as DispatcherEvent
+import ua.tarch64.dispatcher.events.SendDocumentChangesEvent
+import ua.tarch64.dispatcher.events.UpdateDocumentEvent
+import ua.tarch64.dispatcher.events.rooms.*
 import ua.tarch64.shared.models.DocumentChanges
 
 class Gateway: PluginModule() {

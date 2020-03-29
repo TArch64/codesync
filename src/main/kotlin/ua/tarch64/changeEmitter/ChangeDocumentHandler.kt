@@ -3,8 +3,8 @@ package ua.tarch64.changeEmitter
 import com.intellij.openapi.editor.event.DocumentEvent
 import com.intellij.openapi.editor.event.DocumentListener
 import ua.tarch64.plugin.PluginState
-import ua.tarch64.shared.dispatcher.Dispatcher
-import ua.tarch64.shared.dispatcher.events.SendDocumentChangesEvent
+import ua.tarch64.dispatcher.Dispatcher
+import ua.tarch64.dispatcher.events.SendDocumentChangesEvent
 import ua.tarch64.shared.helpers.DocumentHelper
 import ua.tarch64.shared.models.DocumentChanges
 import ua.tarch64.shared.ModuleInjector

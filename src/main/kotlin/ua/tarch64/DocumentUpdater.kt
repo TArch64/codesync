@@ -3,8 +3,8 @@ package ua.tarch64
 import ua.tarch64.plugin.PluginModule
 import ua.tarch64.plugin.PluginState
 import ua.tarch64.shared.ModuleInjector
-import ua.tarch64.shared.dispatcher.Event
-import ua.tarch64.shared.dispatcher.events.UpdateDocumentEvent
+import ua.tarch64.dispatcher.Event
+import ua.tarch64.dispatcher.events.UpdateDocumentEvent
 import ua.tarch64.shared.helpers.ApplicationHelper
 import ua.tarch64.shared.models.DocumentChanges
 

@@ -4,8 +4,8 @@ import com.intellij.openapi.editor.Document
 import com.intellij.openapi.fileEditor.FileEditorManagerEvent
 import com.intellij.openapi.fileEditor.FileEditorManagerListener
 import com.intellij.openapi.vfs.VirtualFile
-import ua.tarch64.shared.dispatcher.Dispatcher
-import ua.tarch64.shared.dispatcher.events.ChangedActiveDocumentEvent
+import ua.tarch64.dispatcher.Dispatcher
+import ua.tarch64.dispatcher.events.ChangedActiveDocumentEvent
 import ua.tarch64.shared.helpers.DocumentHelper
 import ua.tarch64.shared.ModuleInjector
 

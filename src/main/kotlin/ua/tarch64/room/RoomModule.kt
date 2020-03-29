@@ -5,8 +5,8 @@ import ua.tarch64.plugin.PluginConfig
 import ua.tarch64.plugin.PluginModule
 import ua.tarch64.shared.ModuleInjector
 import ua.tarch64.shared.Toasts
-import ua.tarch64.shared.dispatcher.Event
-import ua.tarch64.shared.dispatcher.events.rooms.*
+import ua.tarch64.dispatcher.Event
+import ua.tarch64.dispatcher.events.rooms.*
 
 class RoomModule: PluginModule() {
     private val toasts: Toasts = ModuleInjector.inject()

@@ -1,7 +1,7 @@
-package ua.tarch64.shared.dispatcher.events.rooms
+package ua.tarch64.dispatcher.events.rooms
 
 import org.json.JSONObject
-import ua.tarch64.shared.dispatcher.Event
+import ua.tarch64.dispatcher.Event
 
 class RoomCreatedEvent(payload: RoomCreatedEventPayload): Event(NAME, payload) {
     companion object {

@@ -1,3 +1,3 @@
-package ua.tarch64.shared.dispatcher
+package ua.tarch64.dispatcher
 
 open class Event(val name: String, val payload: Any? = null)
