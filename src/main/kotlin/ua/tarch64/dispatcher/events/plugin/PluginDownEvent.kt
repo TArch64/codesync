@@ -1,4 +1,4 @@
-package ua.tarch64.dispatcher.events
+package ua.tarch64.dispatcher.events.plugin
 
 import ua.tarch64.dispatcher.Event
 
