@@ -19,7 +19,7 @@
             <add-to-group group-id="ToolsMenu" anchor="last"/>
             <action id="ua.TArch64.codesync.room.create" class="ua.tarch64.room.actions.CreateAction" text="Create Room"/>
             <action id="ua.TArch64.codesync.room.join" class="ua.tarch64.room.actions.JoinAction" text="Join to Room"/>
-            <action id="ua.TArch64.codesync.room.disconnect" class="ua.tarch64.room.actions.DisconnectAction" text="Disconnect from Room"/>
+            <action id="ua.TArch64.codesync.room.leave" class="ua.tarch64.room.actions.LeaveAction" text="Leave from Room"/>
         </group>
     </actions>
 </idea-plugin>

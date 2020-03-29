@@ -1,7 +1,7 @@
 export interface IEmitResponseOptions {
     eventName: string;
     payload?: any;
-    room?: string;
+    inCurrentRoom?: boolean;
     broadcast?: boolean;
     useCurrentNamespace?: boolean;
 }

@@ -1,4 +1,4 @@
-export interface Userdata {
+export interface ConnectionData {
     username: string;
     roomId: string;
 }

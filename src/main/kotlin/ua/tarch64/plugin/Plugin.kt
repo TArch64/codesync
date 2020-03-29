@@ -12,8 +12,8 @@ import ua.tarch64.shared.ModuleInjector
 
 class Plugin {
     private val dispatcher: Dispatcher = ModuleInjector.inject()
-    private val pluginState: PluginState = ModuleInjector.inject()
     private val modules = listOf(
+        PluginState::class,
         Gateway::class,
         RoomModule::class,
         DocumentsListener::class,
@@ -23,10 +23,6 @@ class Plugin {
 
     init {
         this.modules.forEach { ModuleInjector.inject(it) }
-    }
-
-    fun configure(updateConfig: PluginConfig.() -> Unit) {
-        this.pluginState.config = this.pluginState.config.apply(updateConfig)
     }
 
     fun up() {

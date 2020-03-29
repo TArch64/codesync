@@ -1,10 +1,15 @@
 export class Logger {
-    public exec(name: string, data: any): void {
-        console.log('.\n'.repeat(2));
-        console.log(new Date().toUTCString());
-        console.log('.\n');
+    public exec(name: string, data: any, isRequestEvent: boolean): void {
+        console.log('|\n'.repeat(2));
+        this.logHeaders(isRequestEvent);
         console.log(`api_event: ${name}`);
         if (data) this.log('event_payload', data);
+    }
+
+    private logHeaders(isRequestEvent: boolean) {
+        console.log(new Date().toUTCString());
+        const eventType = isRequestEvent ? 'request' : 'response';
+        console.log(`event_type: ${eventType}`);
     }
 
     private log(name: string, data: any): void {

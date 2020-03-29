@@ -20,13 +20,17 @@ class Gateway: PluginModule() {
         this.socket.on(UpdateDocumentEvent.NAME, this::onReceivedExternalChanges)
         this.dispatcher.listen(SendDocumentChangesEvent.NAME).subscribe(this::sendDocumentChanges)
 
-        // Rooms events
-        this.dispatcher.listen(RoomCreateEvent.NAME).subscribe(this::onCreateRoom)
-        this.socket.on(RoomCreatedEvent.NAME, this::onCreatedRoom)
-
-        this.dispatcher.listen(RoomJoinEvent.NAME).subscribe(this::onJoinRoom)
-        this.socket.on(RoomJoinedEvent.NAME, this::onJoinedRoom)
-        this.socket.on(RoomCollaboratorJoinedEvent.NAME, this::onJoinedCollaboratorRoom)
+        // Rooms create events
+        this.dispatcher.listen(RoomCreateEvent.NAME).subscribe(this::onRoomCreate)
+        this.socket.on(RoomCreatedEvent.NAME, this::onRoomCreated)
+        // Rooms join events
+        this.dispatcher.listen(RoomJoinEvent.NAME).subscribe(this::onRoomJoin)
+        this.socket.on(RoomJoinedEvent.NAME, this::onRoomJoined)
+        this.socket.on(RoomCollaboratorJoinedEvent.NAME, this::onRoomCollaboratorJoined)
+        // Rooms leave events
+        this.dispatcher.listen(RoomLeaveEvent.NAME).subscribe(this::onRoomLeave)
+        this.socket.on(RoomLeftEvent.NAME, this::onRoomLeft)
+        this.socket.on(RoomCollaboratorLeftEvent.NAME, this::onRoomCollaboratorLeft)
     }
 
     private fun sendDocumentChanges(event: DispatcherEvent) {
@@ -45,30 +49,48 @@ class Gateway: PluginModule() {
         this.socket = this.socket.disconnect()
     }
 
-    // Rooms handlers
+    // Rooms create handlers
 
-    private fun onCreateRoom(event: DispatcherEvent) {
+    private fun onRoomCreate(event: DispatcherEvent) {
         val json = (event.payload as RoomCreateEventPayload).toJSON()
         this.socket.emit(event.name, json)
     }
 
-    private fun onCreatedRoom(vararg args: Any) {
+    private fun onRoomCreated(vararg args: Any) {
         val event = RoomCreatedEvent.fromJSON(args.first() as JSONObject)
         this.dispatcher.trigger(event)
     }
 
-    private fun onJoinRoom(event: DispatcherEvent) {
+    // Rooms join handlers
+
+    private fun onRoomJoin(event: DispatcherEvent) {
         val json = (event.payload as RoomJoinEventPayload).toJSON()
         this.socket.emit(event.name, json)
     }
 
-    private fun onJoinedRoom(vararg args: Any) {
+    private fun onRoomJoined(vararg args: Any) {
         val event = RoomJoinedEvent.fromJSON(args.first() as JSONObject)
         this.dispatcher.trigger(event)
     }
 
-    private fun onJoinedCollaboratorRoom(vararg args: Any) {
+    private fun onRoomCollaboratorJoined(vararg args: Any) {
         val event = RoomCollaboratorJoinedEvent.fromJSON(args.first() as JSONObject)
+        this.dispatcher.trigger(event)
+    }
+
+    // Rooms leave handlers
+
+    private fun onRoomLeave(event: DispatcherEvent) {
+        this.socket.emit(event.name)
+    }
+
+    private fun onRoomLeft(vararg args: Any) {
+        val event = RoomLeftEvent()
+        this.dispatcher.trigger(event)
+    }
+
+    private fun onRoomCollaboratorLeft(vararg args: Any) {
+        val event = RoomCollaboratorLeftEvent.fromJSON(args.first() as JSONObject)
         this.dispatcher.trigger(event)
     }
 }

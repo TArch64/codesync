@@ -1,10 +1,11 @@
 import useSocket, { Socket } from 'socket.io';
 import { createServer } from 'http';
 import { Config } from '../config';
-import { ApiRooms } from './modules';
+import { ApiModule, ApiRooms } from './modules';
 import { Event, EventContext } from './models';
 import { KeepAliveHeroku } from './KeepAliveHeroku';
 import { Logger } from '../Logger';
+import { ConnectionDataStorage } from './dataStorage';
 
 export class ApiRoot {
     constructor(private config: Config, private logger: Logger) {}
@@ -24,7 +25,13 @@ export class ApiRoot {
     }
 
     private createApiEvents(socket: Socket): Event<any>[] {
-        return new ApiRooms(socket, this.logger).namespacedEventsList;
+        const connectionDataStorage = new ConnectionDataStorage();
+        const modules: ApiModule[] = [
+            new ApiRooms(socket, connectionDataStorage, this.logger)
+        ];
+        return modules
+            .map(module => module.namespacedEventsList)
+            .reduce((list, events) => list.concat(events), []);
     }
 
     private listenEvent(socket: Socket, event: Event<any>): void {

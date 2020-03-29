@@ -9,8 +9,8 @@ class Dispatcher {
     private val events = BehaviorSubject.create<Event>()
     private val stream: Observable<Event> = this.events.hide()
 
-    val onDownStream = this.listen(PluginDownEvent.NAME)
-    val onUpStream = this.listen(PluginUpEvent.NAME)
+    val onDownStream = this.getStream(PluginDownEvent.NAME)
+    val onUpStream = this.getStream(PluginUpEvent.NAME)
 
     fun trigger(event: Event) = this.events.onNext(event)
 
