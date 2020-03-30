@@ -5,9 +5,11 @@ import { ApiModule, ApiRooms } from './modules';
 import { Event, EventContext } from './models';
 import { KeepAliveHeroku } from './KeepAliveHeroku';
 import { Logger } from '../Logger';
-import { ConnectionDataStorage } from './dataStorage';
+import { ConnectionDataStorage, GlobalDataStorage } from './dataStorage';
 
 export class ApiRoot {
+    private globalDataStorage = new GlobalDataStorage();
+
     constructor(private config: Config, private logger: Logger) {}
 
     public up(): Promise<void> {
@@ -27,7 +29,12 @@ export class ApiRoot {
     private createApiEvents(socket: Socket): Event<any>[] {
         const connectionDataStorage = new ConnectionDataStorage();
         const modules: ApiModule[] = [
-            new ApiRooms(socket, connectionDataStorage, this.logger)
+            new ApiRooms(
+                socket,
+                connectionDataStorage,
+                this.globalDataStorage,
+                this.logger
+            )
         ];
         return modules
             .map(module => module.namespacedEventsList)

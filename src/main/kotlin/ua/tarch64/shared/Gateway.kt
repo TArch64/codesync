@@ -8,6 +8,7 @@ import ua.tarch64.plugin.PluginState
 import ua.tarch64.dispatcher.Event as DispatcherEvent
 import ua.tarch64.dispatcher.events.SendDocumentChangesEvent
 import ua.tarch64.dispatcher.events.UpdateDocumentEvent
+import ua.tarch64.dispatcher.events.plugin.PluginErrorEvent
 import ua.tarch64.dispatcher.events.rooms.*
 import ua.tarch64.shared.models.DocumentChanges
 
@@ -17,6 +18,11 @@ class Gateway: PluginModule() {
 
     override fun up() {
         this.socket = IO.socket(this.pluginState.config.gatewayServiceUrl).connect()
+
+        // General events
+        this.socket.on(PluginErrorEvent.NAME, this::onError)
+
+        //old
         this.socket.on(UpdateDocumentEvent.NAME, this::onReceivedExternalChanges)
         this.dispatcher.listen(SendDocumentChangesEvent.NAME).subscribe(this::sendDocumentChanges)
 
@@ -33,6 +39,16 @@ class Gateway: PluginModule() {
         this.socket.on(RoomCollaboratorLeftEvent.NAME, this::onRoomCollaboratorLeft)
     }
 
+    override fun down() {
+        this.socket.off()
+        this.socket = this.socket.disconnect()
+    }
+
+    private fun onError(vararg args: Any) {
+        val event = PluginErrorEvent.fromJSON(args.first() as JSONObject)
+        this.dispatcher.trigger(event)
+    }
+
     private fun sendDocumentChanges(event: DispatcherEvent) {
         val json = (event.payload as DocumentChanges).toJSON()
         this.socket.emit(event.name, json)
@@ -42,11 +58,6 @@ class Gateway: PluginModule() {
         val documentChanges = DocumentChanges.fromJSON(args.first() as JSONObject)
         val event = UpdateDocumentEvent(documentChanges)
         this.dispatcher.trigger(event)
-    }
-
-    override fun down() {
-        this.socket.off()
-        this.socket = this.socket.disconnect()
     }
 
     // Rooms create handlers

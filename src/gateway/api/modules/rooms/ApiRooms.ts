@@ -21,6 +21,7 @@ export class ApiRooms extends ApiModule {
             roomId: generateUuidV4(),
             username: context.payload!.username
         };
+        this.globalDataStorage.addRoomId(this.connectionDataStorage.currentRoomId);
         this.socket.join(this.connectionDataStorage.currentRoomId);
         this.emit({
             eventName: 'created',
@@ -30,6 +31,7 @@ export class ApiRooms extends ApiModule {
     }
 
     public onJoin(context: EventContext<JoinRoomEventPayload>): void {
+        if (!this.validateJoinPayload(context.payload!)) return;
         this.connectionDataStorage.connectionData = {
             roomId: context.payload!.roomId,
             username: context.payload!.username
@@ -45,6 +47,15 @@ export class ApiRooms extends ApiModule {
             broadcast: true,
             payload: this.userinfo
         });
+    }
+
+    private validateJoinPayload(payload: JoinRoomEventPayload): boolean {
+        const isExistingRoomId = this.globalDataStorage.isExistingRoomId(payload.roomId);
+        if (!isExistingRoomId) {
+            this.reject("The room is not found");
+            return false;
+        }
+        return true;
     }
 
     public onLeave(): void {

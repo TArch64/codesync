@@ -2,7 +2,7 @@ import { Event, EventContext, EventHandler } from '../models';
 import { Logger } from '../../Logger';
 import { Socket } from 'socket.io';
 import { IEmitResponseOptions } from '../models/IEmitResponseOptions';
-import { ConnectionDataStorage } from '../dataStorage';
+import {ConnectionDataStorage, GlobalDataStorage} from '../dataStorage';
 
 export abstract class ApiModule {
     private readonly events = new Map<string, EventHandler<any>>();
@@ -11,6 +11,7 @@ export abstract class ApiModule {
     constructor(
         protected socket: Socket,
         protected connectionDataStorage: ConnectionDataStorage,
+        protected globalDataStorage: GlobalDataStorage,
         private logger: Logger
     ) {
         this.up();
@@ -50,6 +51,15 @@ export abstract class ApiModule {
             inCurrentRoom: true,
             ...options
         };
+    }
+
+    protected reject(message: string): void {
+        this.emit({
+            eventName: 'common::error',
+            inCurrentRoom: false,
+            useCurrentNamespace: false,
+            payload: { description: message }
+        })
     }
 
     public get namespacedEventsList(): Event<object>[] {
