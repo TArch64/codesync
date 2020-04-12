@@ -6,11 +6,9 @@ import org.json.JSONObject
 import ua.tarch64.plugin.PluginModule
 import ua.tarch64.plugin.PluginState
 import ua.tarch64.dispatcher.Event as DispatcherEvent
-import ua.tarch64.dispatcher.events.SendDocumentChangesEvent
-import ua.tarch64.dispatcher.events.UpdateDocumentEvent
 import ua.tarch64.dispatcher.events.plugin.PluginErrorEvent
 import ua.tarch64.dispatcher.events.rooms.*
-import ua.tarch64.shared.models.DocumentChanges
+import ua.tarch64.dispatcher.events.editor.*
 
 class Gateway: PluginModule() {
     private val pluginState: PluginState = ModuleInjector.inject()
@@ -21,10 +19,6 @@ class Gateway: PluginModule() {
 
         // General events
         this.socket.on(PluginErrorEvent.NAME, this::onError)
-
-        //old
-        this.socket.on(UpdateDocumentEvent.NAME, this::onReceivedExternalChanges)
-        this.dispatcher.listen(SendDocumentChangesEvent.NAME).subscribe(this::sendDocumentChanges)
 
         // Rooms create events
         this.dispatcher.listen(RoomCreateEvent.NAME).subscribe(this::onRoomCreate)
@@ -37,6 +31,10 @@ class Gateway: PluginModule() {
         this.dispatcher.listen(RoomLeaveEvent.NAME).subscribe(this::onRoomLeave)
         this.socket.on(RoomLeftEvent.NAME, this::onRoomLeft)
         this.socket.on(RoomCollaboratorLeftEvent.NAME, this::onRoomCollaboratorLeft)
+
+        // Editor Text events
+        this.dispatcher.listen(EditorOutputTextChangesEvent.NAME).subscribe(this::onEditorOutputTextChanges)
+        this.socket.on(EditorInputTextChangesEvent.NAME, this::onEditorInputTextChanges)
     }
 
     override fun down() {
@@ -46,17 +44,6 @@ class Gateway: PluginModule() {
 
     private fun onError(vararg args: Any) {
         val event = PluginErrorEvent.fromJSON(args.first() as JSONObject)
-        this.dispatcher.trigger(event)
-    }
-
-    private fun sendDocumentChanges(event: DispatcherEvent) {
-        val json = (event.payload as DocumentChanges).toJSON()
-        this.socket.emit(event.name, json)
-    }
-
-    private fun onReceivedExternalChanges(vararg args: Any) {
-        val documentChanges = DocumentChanges.fromJSON(args.first() as JSONObject)
-        val event = UpdateDocumentEvent(documentChanges)
         this.dispatcher.trigger(event)
     }
 
@@ -102,6 +89,18 @@ class Gateway: PluginModule() {
 
     private fun onRoomCollaboratorLeft(vararg args: Any) {
         val event = RoomCollaboratorLeftEvent.fromJSON(args.first() as JSONObject)
+        this.dispatcher.trigger(event)
+    }
+
+    // Editor Text events
+
+    private fun onEditorOutputTextChanges(event: DispatcherEvent) {
+        val json = (event.payload as EditorOutputTextChangesEventPayload).changes.toJSON()
+        this.socket.emit(event.name, json)
+    }
+
+    private fun onEditorInputTextChanges(vararg args: Any) {
+        val event = EditorInputTextChangesEvent.fromJSON(args.first() as JSONObject)
         this.dispatcher.trigger(event)
     }
 }

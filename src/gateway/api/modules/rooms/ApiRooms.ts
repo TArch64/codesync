@@ -16,7 +16,7 @@ export class ApiRooms extends ApiModule {
         this.leave();
     }
 
-    public onCreate(context: EventContext<CreateRoomEventPayload>): void {
+    private onCreate(context: EventContext<CreateRoomEventPayload>): void {
         this.connectionDataStorage.connectionData = {
             roomId: generateUuidV4(),
             username: context.payload!.username
@@ -30,7 +30,7 @@ export class ApiRooms extends ApiModule {
         });
     }
 
-    public onJoin(context: EventContext<JoinRoomEventPayload>): void {
+    private onJoin(context: EventContext<JoinRoomEventPayload>): void {
         if (!this.validateJoinPayload(context.payload!)) return;
         this.connectionDataStorage.connectionData = {
             roomId: context.payload!.roomId,
@@ -58,7 +58,7 @@ export class ApiRooms extends ApiModule {
         return true;
     }
 
-    public onLeave(): void {
+    private onLeave(): void {
         this.emit({
             eventName: 'left',
             inCurrentRoom: false

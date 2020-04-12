@@ -1,7 +1,7 @@
 import useSocket, { Socket } from 'socket.io';
 import { createServer } from 'http';
 import { Config } from '../config';
-import { ApiModule, ApiRooms } from './modules';
+import { ApiEditor, ApiModule, ApiRooms } from './modules';
 import { Event, EventContext } from './models';
 import { KeepAliveHeroku } from './KeepAliveHeroku';
 import { Logger } from '../Logger';
@@ -10,7 +10,8 @@ import { ConnectionDataStorage, GlobalDataStorage } from './dataStorage';
 export class ApiRoot {
     private globalDataStorage = new GlobalDataStorage();
     private modules = [
-        ApiRooms
+        ApiRooms,
+        ApiEditor
     ];
 
     constructor(private config: Config, private logger: Logger) {}

@@ -1,10 +1,11 @@
 package ua.tarch64.shared.models
 
 import com.intellij.openapi.editor.Document
+import com.intellij.openapi.editor.event.DocumentEvent
 import org.json.JSONObject
 import ua.tarch64.shared.helpers.DocumentHelper
 
-data class DocumentChanges(
+data class TextChanges(
     val changed: String,
     val documentRelativePath: String,
     val startChangesAtPosition: Int,
@@ -23,19 +24,28 @@ data class DocumentChanges(
         return json
     }
 
-    fun isEqual(changes: DocumentChanges): Boolean {
+    fun isEqual(changes: TextChanges): Boolean {
         return changes.changed == this.changed
                 && changes.startChangesAtPosition == this.startChangesAtPosition
                 && changes.endChangesAtPosition == this.endChangesAtPosition
     }
 
     companion object {
-        fun fromJSON(json: JSONObject): DocumentChanges {
-            return DocumentChanges(
+        fun fromJSON(json: JSONObject): TextChanges {
+            return TextChanges(
                 json.getString("changed"),
                 json.getString("documentRelativePath"),
                 json.getInt("startChangesAtPosition"),
                 json.getInt("endChangesAtPosition")
+            )
+        }
+
+        fun fromDocumentEvent(event: DocumentEvent): TextChanges {
+            return TextChanges(
+                    event.newFragment.toString(),
+                    DocumentHelper.relativePath(event.document),
+                    event.offset,
+                    event.offset + event.oldLength
             )
         }
     }

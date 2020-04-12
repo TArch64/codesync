@@ -17,7 +17,7 @@ export abstract class ApiModule {
         this.socket.on('disconnect', this.down.bind(this));
     }
 
-    protected up(): void {};
+    protected abstract up(): void;
     protected down(): void {};
 
     protected useEvent<Payload = object>(eventName: string, handler: EventHandler<Payload>): void {

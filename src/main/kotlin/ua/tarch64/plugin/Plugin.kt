@@ -1,8 +1,5 @@
 package ua.tarch64.plugin
 
-import ua.tarch64.changeEmitter.ChangesEmitter
-import ua.tarch64.documentListener.DocumentsListener
-import ua.tarch64.DocumentUpdater
 import ua.tarch64.room.RoomModule
 import ua.tarch64.dispatcher.Dispatcher
 import ua.tarch64.dispatcher.Event
@@ -10,6 +7,7 @@ import ua.tarch64.dispatcher.events.plugin.PluginDownEvent
 import ua.tarch64.dispatcher.events.plugin.PluginErrorEvent
 import ua.tarch64.dispatcher.events.plugin.PluginErrorEventPayload
 import ua.tarch64.dispatcher.events.plugin.PluginUpEvent
+import ua.tarch64.editor.EditorModule
 import ua.tarch64.shared.Gateway
 import ua.tarch64.shared.ModuleInjector
 import ua.tarch64.shared.Toasts
@@ -22,12 +20,11 @@ class Plugin {
         PluginState::class,
         Gateway::class,
         RoomModule::class,
-        DocumentsListener::class,
-        ChangesEmitter::class,
-        DocumentUpdater::class
+        EditorModule::class
     )
 
     init {
+
         this.modules.forEach { ModuleInjector.inject(it) }
     }
 
