@@ -1,8 +1,7 @@
-import { Event, EventContext, EventHandler } from '../models';
-import { Logger } from '../../Logger';
 import { Socket } from 'socket.io';
-import { IEmitResponseOptions } from '../models/IEmitResponseOptions';
-import {ConnectionDataStorage, GlobalDataStorage} from '../dataStorage';
+import { Logger } from '../../Logger';
+import { Event, EventContext, EventHandler, IEmitResponseOptions } from '../models';
+import { ConnectionDataStorage, GlobalDataStorage } from '../dataStorage';
 
 export abstract class ApiModule {
     private readonly events = new Map<string, EventHandler<any>>();
@@ -18,7 +17,7 @@ export abstract class ApiModule {
         this.socket.on('disconnect', this.down.bind(this));
     }
 
-    protected abstract up(): void;
+    protected up(): void {};
     protected down(): void {};
 
     protected useEvent<Payload = object>(eventName: string, handler: EventHandler<Payload>): void {

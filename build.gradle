@@ -20,7 +20,7 @@ dependencies {
 }
 
 intellij {
-    version "2019.3.3"
+    version "2020.1"
 }
 
 compileKotlin {

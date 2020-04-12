@@ -9,6 +9,9 @@ import { ConnectionDataStorage, GlobalDataStorage } from './dataStorage';
 
 export class ApiRoot {
     private globalDataStorage = new GlobalDataStorage();
+    private modules = [
+        ApiRooms
+    ];
 
     constructor(private config: Config, private logger: Logger) {}
 
@@ -28,16 +31,16 @@ export class ApiRoot {
 
     private createApiEvents(socket: Socket): Event<any>[] {
         const connectionDataStorage = new ConnectionDataStorage();
-        const modules: ApiModule[] = [
-            new ApiRooms(
+        const createModule = (ModuleClass: any): ApiModule => {
+            return new ModuleClass(
                 socket,
                 connectionDataStorage,
                 this.globalDataStorage,
                 this.logger
-            )
-        ];
-        return modules
-            .map(module => module.namespacedEventsList)
+            );
+        };
+        return this.modules
+            .map(module => createModule(module).namespacedEventsList)
             .reduce((list, events) => list.concat(events), []);
     }
 
